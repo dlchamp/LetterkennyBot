@@ -14,7 +14,9 @@ seemed to be lacking a lot of the quotes, and missing other features to make the
 * Getting more familiar with python, docker, github, and dockerhub.  Will make improvements where possible over time.
 
 ## In Progress
-* Set cooldown for "birthday" response so that there's not a response for every "Happy Birthday" message within a short period.
+* **General** - Set cooldown for "birthday" response so that there's not a response for every "Happy Birthday" message within a short period.
+* **General** - Set check for last message to prevent responses repeating too often.
+* **Docker** - implement paths for access to userlist/usernames.txt to be able to edit outside of the container
 
 ## Using the bot
 * Bot responds to "Fuck you shoresy" (any variation) - will respond with a randomly selected string located in quotes/quotes.txt, mentions user that invoked response
