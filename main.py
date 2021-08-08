@@ -7,6 +7,12 @@ import os
 import discord
 import random
 
+## Comment this section out for non-Docker install ##
+token = os.environ['TOKEN']
+
+# If not using Docker, uncomment and replace BOT TOKEN with your token from Discord Developer ##
+#token = 'BOT TOKEN'
+
 ## open quotes.txt ##
 with open("quotes/quotes.txt") as file:
 	quotes = file.read()
@@ -22,9 +28,7 @@ with open("userlist/usernames.txt") as file:
 	usernames = file.read()
 	username = list(map(str, usernames.split("\n")))
 
-## open image for icon ##
-#with open('icon.jpg') as file:
-#	icon = file.read()
+
 
 
 ## identify bot client ##
@@ -33,10 +37,6 @@ client = discord.Client()
 fight_words = ["what's gunna happen?", "what's going to happen?","whats gunna happen?","whats going to happen?"
 "what's gunna happen", "what's going to happen","whats gunna happen","whats going to happen","what's gonna happen",
 "what's gonna happen","whats gonna happen","what is gonna happen","what is going to happen","what is gunna happen","what's gunna happen"]
-
-## load bot token ##
-token = os.environ.get('TOKEN')
-
 
 
 ## log bot login event ##
@@ -78,7 +78,7 @@ async def on_message(message):
 		await message.channel.send("Good'n you?")
 
 	if "to be fair" in msg.lower():
-		await message.channel.send(file=discord.File('img/to be fair.gif'))
+		await message.channel.send(file=discord.File('img/to_be_fair.gif'))
 
 	if "birthday" in msg.lower():
 		await message.channel.send(file=discord.File('img/birthday.gif'))
