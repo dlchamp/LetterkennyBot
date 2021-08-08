@@ -67,34 +67,26 @@ async def on_message(message):
 		quote_reply = random.choice(quote)
 		random_mention = random.choice(username)
 		random_reply = quote_reply.replace("{mention}", mentioned).replace("{random}", random_mention)
-		
-		print(random_reply)
 		await message.channel.send(random_reply)
 
 	if "fucking embarrassing" in msg.lower():
-		print("Sent Discord file - img/embarrassing.gif")
 		await message.channel.send(file=discord.File('img/embarrassing.gif'))
 
 	if any(word in msg.lower() for word in fight_words):
-		print(random.choice(fight))
 		await message.channel.send(random.choice(fight))
 
 	if "how are ya now" in msg.lower():
-		print("Replied 'Good/'n you' to "% message.author)
 		await message.channel.send("Good'n you?")
 
 	if "to be fair" in msg.lower():
-		print("Replied Discord file - img/to_be_fair.gif to "% message.author )
 		await message.channel.send(file=discord.File('img/to_be_fair.gif'))
 
 	if "toughest guy" in msg.lower():
-		print("Replied Discord file - img/end_of_the_laneway.jpg to "% message.author)
 		await message.channel.send(file=discord.File('img/end_of_the_laneway.jpg'))
 
 	global cooldown
 	if "happy birthday" in msg.lower() and cooldown:
 		cooldown = False
-		print("no cooldown - sending img/birthday.gif to channel - starting 600 second cooldown")
 		await message.channel.send(file=discord.File('img/birthday.gif'))
 		time.sleep(600)
 		cooldown = True
