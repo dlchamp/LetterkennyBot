@@ -1,6 +1,6 @@
-# Project Title
+# LetterkennyBot
 
-LetterkennyBot
+
 
 ## Description
 
@@ -8,16 +8,15 @@ As part of my Python learning experience I wanted to try my hand and building a 
 My friends and I are pretty big Letterkenny fans and we've come across a couple Discord bots based around quotes from the show, specifically Shoresy, but they   
 seemed to be lacking a lot of the quotes, and missing other features to make the bot more fun.  I decided to improve on this idea by including 25 quotes from Shoresy (will be updating as more seasons come out.)  This is the very first project I've ever completed in Python and I'm sure that the code would be cleaner and more optimized, but it does work well in it's current version and I will be updating and optimizing as I hone my knowledge and skills.
 
-**Known issues**
+## Known Issues
 * Some responses will break if userlist/usernames.txt is left empty.  They will still respond, but variable "{random}" will be left in the response string
 * There's currently over 20 responses to "Fuck you shoresy", but sometimes the responses might repeat more often than I'd like.
 * Getting more familiar with python, docker, github, and dockerhub.  Will make improvements where possible over time.
 
-**In progress**
+## In Progress
 * Set cooldown for "birthday" response so that there's not a response for every "Happy Birthday" message within a short period.
 
-
-**Using the Bot**
+## Using the bot
 * Bot responds to "Fuck you shoresy" (any variation) - will respond with a randomly selected string located in quotes/quotes.txt, mentions user that invoked response
 * One response will include "Fight me, see what happens" - user can then respond with "What's going to happen?" (or any variation) and will be replied to with a  
 with a randomly selected quote from quotes/fight.txt
@@ -26,7 +25,6 @@ with a randomly selected quote from quotes/fight.txt
 * Bot responds to Birthay wishes with super soft birthday gif
 * Bot reponds to "Fucking embarrasing" (any variation) with trashcan kick .gif
 
-## Getting Started
 
 ### Dependencies
 
@@ -34,7 +32,7 @@ with a randomly selected quote from quotes/fight.txt
 * see requirements.txt for Python dependencies
 * Python installed with PATH access in Windows
 
-### Installing
+## Getting Started
 
 **Setting up Discord Bot**
 1. Login to Discord web - https://discord.com
@@ -62,8 +60,6 @@ with a randomly selected quote from quotes/fight.txt
  Install dependencies - `pip install -r requirements.txt`
  Run the main.py - `python main.py`
  Profit.
-
-
 
 
 **Unraid Docker Installation and Run**
