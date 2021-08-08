@@ -26,6 +26,7 @@ with a randomly selected quote from quotes/fight.txt
 * Bot responds to "to be fair" (any variation) with To_be_fair.gif (scene from show)
 * Bot responds to Birthay wishes with super soft birthday gif
 * Bot reponds to "Fucking embarrasing" (any variation) with trashcan kick .gif
+* Bot responds to "toughest guy" (any variation) with end_of_the_laneway.jpg
 
 
 ### Dependencies
