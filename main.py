@@ -87,6 +87,10 @@ async def on_message(message):
 		print("Replied Discord file - img/to_be_fair.gif to "% message.author )
 		await message.channel.send(file=discord.File('img/to_be_fair.gif'))
 
+	if "toughest guy" in msg.lower():
+		print("Replied Discord file - img/end_of_the_laneway.jpg to "% message.author)
+		await message.channel.send(file=discord.File('img/end_of_the_laneway.jpg'))
+
 	global cooldown
 	if "happy birthday" in msg.lower() and cooldown:
 		cooldown = False
@@ -95,6 +99,8 @@ async def on_message(message):
 		time.sleep(600)
 		cooldown = True
 		print("birthday.gif on cooldown")
+
+
 
 
 client.run(token)
