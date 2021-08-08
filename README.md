@@ -53,13 +53,13 @@ with a randomly selected quote from quotes/fight.txt
 
 1. Download the latest Python3 from [python.org](https://www.python.org/downloads/)  
 2. Download this project and unzip to a directory
-3. Edit main.py and comment out (#) token = os.environ['TOKEN'], then uncomment (remove #) `#token = 'BOT TOKEN'`, then replace `BOT TOKEN` with you Discord bot you copied during **Setting up Discord bot - Step 7**
+3. Edit main.py and comment out (#)`token = os.environ['TOKEN']`, then uncomment (remove #) `#token = 'BOT TOKEN'`, then replace `BOT TOKEN` with your Discord bot token you copied during **Setting up Discord bot - Step 7**  
 4. Save the changes
 5. Navigate to userlist/ and edit the usernames.txt file - include your friends' discord IDs one per line - sample ID <@789651e579365>
- Open command prompt and navigate to your LetterkennyBot-main folder (ex. cd :C:\Users\YOURUSER\Documents\DiscordBot\LetterkennyBot-main\)
- Install dependencies - `pip install -r requirements.txt`
- Run the main.py - `python main.py`
- Profit.
+6. Open command prompt and navigate to your LetterkennyBot-main folder (ex. cd :C:\Users\YOURUSER\Documents\DiscordBot\LetterkennyBot-main\)
+7. Install dependencies - `pip install -r requirements.txt`
+8. Run the main.py - `python main.py`
+9. Profit.
 
 
 **Unraid Docker Installation and Run**
