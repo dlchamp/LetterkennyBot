@@ -24,7 +24,7 @@ seemed to be lacking a lot of the quotes, and missing other features to make the
 with a randomly selected quote from quotes/fight.txt
 * A couple of the responses will have a second mention - these mentions must be configured in the userlist/usernames.txt file.
 * Bot responds to "to be fair" (any variation) with To_be_fair.gif (scene from show)
-* Bot responds to Birthay wishes with super soft birthday gif
+* Bot responds to Birthay wishes with super soft birthday gif - has 10 minute cooldown to prevent spam on multiple birthday wishes in quick succession.
 * Bot reponds to "Fucking embarrasing" (any variation) with trashcan kick .gif
 * Bot responds to "toughest guy" (any variation) with end_of_the_laneway.jpg
 
