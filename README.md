@@ -12,9 +12,10 @@ seemed to be lacking a lot of the quotes, and missing other features to make the
 * Some responses will break if userlist/usernames.txt is left empty.  They will still respond, but variable "{random}" will be left in the response string
 * There's currently over 20 responses to "Fuck you shoresy", but sometimes the responses might repeat more often than I'd like.
 * Getting more familiar with python, docker, github, and dockerhub.  Will make improvements where possible over time.
+* birthday.gif can be spammed if multiple users wish someone a "happy birthday"
 
 ## In Progress
-* ~~**General** - Set cooldown for "birthday" response so that there's not a response for every "Happy Birthday" message within a short period.~~
+* **General** - Set cooldown for "birthday" response so that there's not a response for every "Happy Birthday" message within a short period.
 * **General** - Set check for last message to prevent responses repeating too often.
 * **Docker** - implement paths for access to userlist/usernames.txt to be able to edit outside of the container
 
