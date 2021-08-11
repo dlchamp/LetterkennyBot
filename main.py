@@ -67,7 +67,7 @@ async def on_guild_join(guild):
 ## announce server leave in console if bot is connected to a server after running
 @client.event
 async def on_guild_remove(guild):
-	print(f"Joined new server: {guild.name}")
+	print(f"Removed from server: {guild.name}")
 
 
 
