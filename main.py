@@ -64,6 +64,12 @@ async def on_guild_join(guild):
 	print(f"Joined new server: {guild.name}")
 
 
+## announce server leave in console if bot is connected to a server after running
+@client.event
+async def on_guild_remove(guild):
+	print(f"Joined new server: {guild.name}")
+
+
 
 ## begin discord message and response events ##
 @client.event
@@ -154,11 +160,5 @@ async def on_message(message):
 		await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/birthday.gif")
 		print(f"{message.author} | {message.channel} | {message.guild.name} - '{msg}'")
 		print("birthday.gif sent to channel")
-
-
-
-
-
-
 
 client.run(token)
