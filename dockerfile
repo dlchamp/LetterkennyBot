@@ -12,4 +12,7 @@ RUN pip install -r requirements.txt
 COPY . /app/
 
 #Run application
+
 CMD ["python","-u", "main.py"]
+
+
