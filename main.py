@@ -15,7 +15,7 @@ logging.basicConfig(level = logging.INFO)
 token = os.environ['TOKEN']
 
 # If not using Docker, uncomment and replace BOT TOKEN with your token from Discord Developer ##
-#token = 'TOKEN'
+#token = 'BOT TOKEN'
 
 ## open quotes.txt ##
 with open("quotes/quotes.txt") as file:
@@ -48,13 +48,17 @@ activity = discord.Activity(type=discord.ActivityType.watching, name="Letterkenn
 
 
 ## log bot login event ##
+
+
+
 @client.event
 async def on_ready():
 	await client.change_presence(status=discord.Status.online, activity = activity)
 	print("--------------------")
 	print("Logged in as {0.user}.".format(client))
 	print("Connected to servers:")
-	print(client.guilds)
+	for name in client.guilds:
+		print(f"-- {name} --")
 	print("--------------------")
 
 
