@@ -42,11 +42,18 @@ fight_words = ["what's gunna happen?", "what's going to happen?","whats gunna ha
 "what's gonna happen","whats gonna happen","what is gonna happen","what is going to happen","what is gunna happen","what's gunna happen"]
 
 
+## Set bot status
+activity = discord.Activity(type=discord.ActivityType.watching, name="Letterkenny S10")
+
+
 ## log bot login event ##
 @client.event
 async def on_ready():
-	print('We have logged in as {0.user}'
-		.format(client))
+	await client.change_presence(status=discord.Status.online, activity = activity)
+	print("Logged in as {0.user}.".format(client))
+	print("Connected to servers:")
+	print(client.guilds)
+	print("--------------------")
 
 ## set bot icon ##
 #@client.event
