@@ -10,13 +10,12 @@ import time
 import logging
 
 logging.basicConfig(level = logging.INFO)
-cooldown = True
 
 ## Comment this section out for non-Docker install ##
 token = os.environ['TOKEN']
 
 # If not using Docker, uncomment and replace BOT TOKEN with your token from Discord Developer ##
-#token = ''
+#token = 'TOKEN'
 
 ## open quotes.txt ##
 with open("quotes/quotes.txt") as file:
@@ -59,10 +58,12 @@ async def on_ready():
 	print("--------------------")
 
 
-## set bot icon ##
-#@client.event
-#async def on_ready():
-#	await client.user.edit(avatar=icon)
+## announce server join in console if bot is connected to a server after running
+@client.event
+async def on_guild_join(guild):
+	print(f"Joined new server: {guild.name}")
+
+
 
 ## begin discord message and response events ##
 @client.event
@@ -93,7 +94,7 @@ async def on_message(message):
 	## Prints response output to console
 
 	if "fucking embarrassing" in msg.lower():
-		await message.channel.send(file=discord.File('img/embarrassing.gif'))
+		await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/embarrassing.gif")
 		print(f"{message.author} | {message.channel}| {message.guild.name} - '{msg}'")
 		print("emarrassing.gif sent to the channel")
 
@@ -106,8 +107,8 @@ async def on_message(message):
 	if any(word in msg.lower() for word in fight_words):
 		random_fight = random.choice(fight)
 		await message.channel.send(random_fight)
-		print("{message.author} | {message.channel}| {message.guild.name} - '{msg}'")
-		print("Responding with '{random_fight}'")
+		print(f"{message.author} | {message.channel}| {message.guild.name} - '{msg}'")
+		print(f"Responding with '{random_fight}'")
 
 
 
@@ -127,7 +128,7 @@ async def on_message(message):
 	## Prints response output to console
 
 	if "to be fair" in msg.lower():
-		await message.channel.send(file=discord.File('img/to_be_fair.gif'))
+		await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/to_be_fair.gif")
 		print(f"{message.author} | {message.channel}| {message.guild.name} - '{msg}'")
 		print("to_be_fair.gif sent to the channel")
 
@@ -138,7 +139,7 @@ async def on_message(message):
 	## Prints response output to console
 
 	if "toughest guy" in msg.lower():
-		await message.channel.send(file=discord.File('img/end_of_the_laneway.jpg'))
+		await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/end_of_the_laneway.jpg")
 		print(f"{message.author} | {message.channel}| {message.guild.name} - '{msg}'")
 		print("end_of_the_laneway.jpg sent to the channel")
 
@@ -148,14 +149,13 @@ async def on_message(message):
 ## Prints message, author, channel, and server info to console
 ## Prints response output to console
 
-	global cooldown
+
 	if "happy birthday" in msg.lower() and cooldown:
-		cooldown = False
 		await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/birthday.gif")
 		print(f"{message.author} | {message.channel} | {message.guild.name} - '{msg}'")
 		print("birthday.gif sent to channel")
-		time.sleep(600)
-		cooldown = True
+
+
 
 
 
