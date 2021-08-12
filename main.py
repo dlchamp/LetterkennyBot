@@ -9,7 +9,7 @@ import random
 import time
 import logging
 
-logging.basicConfig(level = logging.INFO)
+logging.basicConfig(level = logging.WARNING)
 
 ## Comment this section out for non-Docker install ##
 token = os.environ['TOKEN']
