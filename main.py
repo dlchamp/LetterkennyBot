@@ -5,14 +5,22 @@ load_dotenv()
 ## required import##
 import os
 import discord
+from discord.ext import commands
 import random
 import time
 import logging
+import datetime
+import time
 
 logging.basicConfig(level = logging.WARNING)
 
 ## Comment this section out for non-Docker install ##
 token = os.environ['TOKEN']
+
+
+## identify bot bot ##
+bot = commands.Bot(command_prefix="-", help_command=None, case_insensitive=True)
+client = discord.Client()
 
 # If not using Docker, uncomment and replace BOT TOKEN with your token from Discord Developer ##
 #token = 'BOT TOKEN'
@@ -27,16 +35,10 @@ with open("quotes/fight.txt") as file:
 	fights = file.read()
 	fight = list(map(str, fights.split("\n")))
 
-## open usernames list ##
-with open("userlist/usernames.txt") as file:
-	usernames = file.read()
-	username = list(map(str, usernames.split("\n")))
 
 
 
 
-## identify bot client ##
-client = discord.Client()
 
 fight_words = ["what's gunna happen?", "what's going to happen?","whats gunna happen?","whats going to happen?"
 "what's gunna happen", "what's going to happen","whats gunna happen","whats going to happen","what's gonna happen",
@@ -47,41 +49,74 @@ fight_words = ["what's gunna happen?", "what's going to happen?","whats gunna ha
 activity = discord.Activity(type=discord.ActivityType.watching, name="Letterkenny S10")
 
 
-## log bot login event ##
 
 
 
-@client.event
+
+@bot.event
 async def on_ready():
-	await client.change_presence(status=discord.Status.online, activity = activity)
+	await bot.change_presence(status=discord.Status.online, activity = activity)
 	print("--------------------")
-	print("Logged in as {0.user}.".format(client))
+	print("Logged in as {0.user}.".format(bot))
 	print("Connected to servers:")
-	for name in client.guilds:
+	for name in bot.guilds:
 		print(f"-- {name} --")
 	print("--------------------")
 
-
 ## announce server join in console if bot is connected to a server after running
-@client.event
+@bot.event
 async def on_guild_join(guild):
-	print(f"Joined new server: {guild.name}")
+	name = guild.name
+	print(f"Joined new server: {name}")
+	
 
 
-## announce server leave in console if bot is connected to a server after running
-@client.event
+
+## announce server leave in console if bot is removed from a server after running
+@bot.event
 async def on_guild_remove(guild):
-	print(f"Removed from server: {guild.name}")
+	name = guild.name
+	print(f"Removed from server: {name}")
+	
+
+
+##start bot commands
+
+## Respond with Help embed
+@bot.command()
+async def help(ctx):
+	time = datetime.datetime.utcnow()
+	embed = discord.Embed(title='\u200b', description='`-help` to bring up this menu', timestamp=time)
+	embed.set_author(name='LetterkennyBot', icon_url='https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/container_icon.png')
+	embed.add_field(name='Phrases', value='"Fuck you shoresy"\n"To be fair"\n"How are ya now"\n"Happy Birhtday"\n"What\'s gunna happen?"\n"Fucking embarrassing"\n"toughest guy in Letterkenny"')
+	embed.add_field(name="General Commands",value="`-invite` - DMs a link to add this bot to your server\n")
+	embed.set_footer(text=f"Requested by: {ctx.author.name}", icon_url = bot.user.avatar_url)
+
+	await ctx.send(embed=embed)
+
+## invite link sent to command author DM
+@bot.command(name='invite')
+async def invite(ctx,):
+
+	user = await bot.fetch_user(ctx.author.id)
+	try:
+		await ctx.send(f'Check your DMs, {ctx.author.mention}')
+		await user.send("Invite me to your server with this link.\nhttps://discord.com/api/oauth2/authorize?client_id=873640710480486451&permissions=117760&scope=bot")
+	except:
+		await ctx.send(f"Tried to DM you the invite link, {ctx.author.mention}\nAttaching it here instead.\nhttps://discord.com/api/oauth2/authorize?client_id=873640710480486451&permissions=117760&scope=bot")
+
+
 
 
 
 ## begin discord message and response events ##
-@client.event
+@bot.event
 async def on_message(message):
-	if message.author == client.user:
+	if message.author == bot.user:
 		return
 
 	msg = message.content
+
 	
 ## Responds with random Shoresy quote - quotes found in quotes/quotes.txt ##
 	## Prints message, author, channel, and server info to console
@@ -160,9 +195,15 @@ async def on_message(message):
 ## Prints response output to console
 
 
-	if "happy birthday" in msg.lower() and cooldown:
+	if "happy birthday" in msg.lower():
 		await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/birthday.gif")
 		print(f"{message.author} | {message.channel} | {message.guild.name} - '{msg}'")
 		print("birthday.gif sent to channel")
 
-client.run(token)
+	await bot.process_commands(message)
+
+
+
+
+
+bot.run(token)
