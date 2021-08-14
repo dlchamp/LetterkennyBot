@@ -46,7 +46,7 @@ fight_words = ["what's gunna happen?", "what's going to happen?","whats gunna ha
 
 
 ## Set bot status
-activity = discord.Activity(type=discord.ActivityType.watching, name="Letterkenny S10")
+activity = discord.Activity(type=discord.ActivityType.watching, name="-help | Letterkenny S10")
 
 
 
