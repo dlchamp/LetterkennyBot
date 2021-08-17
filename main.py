@@ -12,6 +12,7 @@ import logging
 import datetime
 import time
 
+
 logging.basicConfig(level = logging.WARNING)
 
 ## Comment this section out for non-Docker install ##
@@ -20,7 +21,6 @@ token = os.environ['TOKEN']
 
 ## identify bot bot ##
 bot = commands.Bot(command_prefix="-", help_command=None, case_insensitive=True)
-client = discord.Client()
 
 # If not using Docker, uncomment and replace BOT TOKEN with your token from Discord Developer ##
 #token = 'BOT TOKEN'
@@ -40,9 +40,9 @@ with open("quotes/fight.txt") as file:
 
 
 
-fight_words = ["what's gunna happen?", "what's going to happen?","whats gunna happen?","whats going to happen?"
-"what's gunna happen", "what's going to happen","whats gunna happen","whats going to happen","what's gonna happen",
-"what's gonna happen","whats gonna happen","what is gonna happen","what is going to happen","what is gunna happen","what's gunna happen"]
+fight_words = ["what's gunna happen","whats gunna happen","what's gonna happen","whats gonna happen","what's going to happen","whats going to happen"]
+
+shoresy = ['fuck you shoresy','fuck you, shoresy']
 
 
 ## Set bot status
@@ -88,11 +88,12 @@ async def help(ctx):
 	time = datetime.datetime.utcnow()
 	embed = discord.Embed(title='\u200b', description='`-help` to bring up this menu', timestamp=time)
 	embed.set_author(name='LetterkennyBot', icon_url='https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/container_icon.png')
-	embed.add_field(name='Phrases', value='"Fuck you shoresy"\n"To be fair"\n"How are ya now"\n"Happy Birhtday"\n"What\'s gunna happen?"\n"Fucking embarrassing"\n"toughest guy in Letterkenny"')
+	embed.add_field(name='Phrases', value='"Fuck you shoresy"\n"To be fair"\n"How are ya now"\n"What\'s gunna happen?"\n"Fucking embarrassing"\n"toughest guy in Letterkenny"')
 	embed.add_field(name="General Commands",value="`-invite` - DMs a link to add this bot to your server\n")
 	embed.set_footer(text=f"Requested by: {ctx.author.name}", icon_url = bot.user.avatar_url)
 
 	await ctx.send(embed=embed)
+
 
 ## invite link sent to command author DM
 @bot.command(name='invite')
@@ -104,8 +105,6 @@ async def invite(ctx,):
 		await user.send("Invite me to your server with this link.\nhttps://discord.com/api/oauth2/authorize?client_id=873640710480486451&permissions=117760&scope=bot")
 	except:
 		await ctx.send(f"Tried to DM you the invite link, {ctx.author.mention}\nAttaching it here instead.\nhttps://discord.com/api/oauth2/authorize?client_id=873640710480486451&permissions=117760&scope=bot")
-
-
 
 
 
@@ -122,13 +121,13 @@ async def on_message(message):
 	## Prints message, author, channel, and server info to console
 	## Prints response output to console
 
-	if "shoresy" in msg.lower():
+	if any(word in msg.lower() for word in shoresy):
 		mentioned = message.author.mention
 		quote_reply = random.choice(quote)
-		random_mention = random.choice(username)
-		random_reply = quote_reply.replace("{mention}", mentioned).replace("{random}", random_mention)
+		random_reply = quote_reply.replace("{mention}", mentioned)
 		await message.channel.send(random_reply)
-		print(f"{message.author} | {message.channel} | {message.guild.name} - `{msg}`")
+
+		print(f"{message.author.name} | {message.channel} | {message.guild.name} - `{msg}`")
 		print(f"Replied with: '{random_reply}")
 
 
@@ -140,7 +139,8 @@ async def on_message(message):
 
 	if "fucking embarrassing" in msg.lower():
 		await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/embarrassing.gif")
-		print(f"{message.author} | {message.channel}| {message.guild.name} - '{msg}'")
+
+		print(f"{message.author.name} | {message.channel}| {message.guild.name} - '{msg}'")
 		print("emarrassing.gif sent to the channel")
 
 
@@ -152,7 +152,8 @@ async def on_message(message):
 	if any(word in msg.lower() for word in fight_words):
 		random_fight = random.choice(fight)
 		await message.channel.send(random_fight)
-		print(f"{message.author} | {message.channel}| {message.guild.name} - '{msg}'")
+
+		print(f"{message.author.name} | {message.channel}| {message.guild.name} - '{msg}'")
 		print(f"Responding with '{random_fight}'")
 
 
@@ -163,7 +164,8 @@ async def on_message(message):
 
 	if "how are ya now" in msg.lower():
 		await message.channel.send("Good'n you?")
-		print(f"{message.author} | {message.channel}| {message.guild.name} - '{msg}'")
+
+		print(f"{message.author.name} | {message.channel}| {message.guild.name} - '{msg}'")
 		print("Responding with 'Good'n you?'")
 
 
@@ -174,7 +176,8 @@ async def on_message(message):
 
 	if "to be fair" in msg.lower():
 		await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/to_be_fair.gif")
-		print(f"{message.author} | {message.channel}| {message.guild.name} - '{msg}'")
+
+		print(f"{message.author.name} | {message.channel}| {message.guild.name} - '{msg}'")
 		print("to_be_fair.gif sent to the channel")
 
 
@@ -185,20 +188,11 @@ async def on_message(message):
 
 	if "toughest guy" in msg.lower():
 		await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/end_of_the_laneway.jpg")
-		print(f"{message.author} | {message.channel}| {message.guild.name} - '{msg}'")
+
+		print(f"{message.author.name} | {message.channel}| {message.guild.name} - '{msg}'")
 		print("end_of_the_laneway.jpg sent to the channel")
 
 
-
-## Responds with birthday.gif##
-## Prints message, author, channel, and server info to console
-## Prints response output to console
-
-
-	if "happy birthday" in msg.lower():
-		await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/birthday.gif")
-		print(f"{message.author} | {message.channel} | {message.guild.name} - '{msg}'")
-		print("birthday.gif sent to channel")
 
 	await bot.process_commands(message)
 
