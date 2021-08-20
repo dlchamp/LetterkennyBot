@@ -122,7 +122,6 @@ async def on_message(message):
 		reply_list = random.choices(quote,k=3)
 		quote_reply = random.choice(reply_list)
 		random_reply = quote_reply.replace("{mention}", mentioned)
-		print(random_reply)
 		await message.channel.send(random_reply)
 
 		print(f"{message.author.name} | {message.channel} | {message.guild.name} - `{msg}`")
