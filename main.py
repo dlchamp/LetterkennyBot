@@ -36,10 +36,6 @@ with open("quotes/fight.txt") as file:
 	fight = list(map(str, fights.split("\n")))
 
 
-
-
-
-
 fight_words = ["what's gunna happen","whats gunna happen","what's gonna happen","whats gonna happen","what's going to happen","whats going to happen"]
 
 shoresy = ['fuck you shoresy','fuck you, shoresy']
@@ -123,8 +119,10 @@ async def on_message(message):
 
 	if any(word in msg.lower() for word in shoresy):
 		mentioned = message.author.mention
-		quote_reply = random.choice(quote)
+		reply_list = random.choices(quote,k=3)
+		quote_reply = random.choice(reply_list)
 		random_reply = quote_reply.replace("{mention}", mentioned)
+		print(random_reply)
 		await message.channel.send(random_reply)
 
 		print(f"{message.author.name} | {message.channel} | {message.guild.name} - `{msg}`")
