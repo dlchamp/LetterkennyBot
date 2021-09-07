@@ -191,11 +191,5 @@ async def on_message(message):
             f"{message.author.name} | {message.channel}| {message.guild.name} - '{msg}'")
         print("end_of_the_laneway.jpg sent to the channel")
 
-    if "happy birthday" in msg.lower():
-        await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/birthday.gif")
-        await asyncio.sleep(300)
-
-    await bot.process_commands(message)
-
 
 bot.run(token)
