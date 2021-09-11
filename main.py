@@ -45,7 +45,7 @@ shoresy = ['fuck you shoresy', 'fuck you, shoresy']
 
 # Set bot status
 activity = discord.Activity(
-    type=discord.ActivityType.watching, name="-help | Letterkenny S10")
+    type=discord.ActivityType.watching, name="-help")
 
 
 @bot.event
