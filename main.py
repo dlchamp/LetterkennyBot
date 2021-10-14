@@ -191,5 +191,7 @@ async def on_message(message):
             f"{message.author.name} | {message.channel}| {message.guild.name} - '{msg}'")
         print("end_of_the_laneway.jpg sent to the channel")
 
+    await bot.process_commands(message)
+
 
 bot.run(token)
