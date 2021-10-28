@@ -51,7 +51,13 @@ activity = discord.Activity(
 @bot.event
 async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=activity)
-    for name in bot.guilds:
+    print('--------------------')
+    print(f'Bot is online and ready!\nConnected as {bot.user.name} ({bot.user.id})')
+    print(f'Connected to {len(bot.guilds)} guild(s)')
+    for guild in bot.guilds:
+        print(guild.name)
+    print('--------------------')
+
 
 # announce server join in console if bot is connected to a server after running
 
@@ -101,11 +107,9 @@ async def invite(ctx,):
 
 ## Message cooldown
 cd = commands.CooldownMapping.from_cooldown(1,600.0, commands.BucketType.channel)
-
 def get_ratelimit(message):
     bucket = cd.get_bucket(message)
     return bucket.update_rate_limit()
-
 
 ## begin discord message and response events ##
 @bot.event
@@ -142,9 +146,6 @@ async def on_message(message):
     if "happy birthday" in msg.lower():
         if ratelimit is None:
             await message.channel.send('https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/birthday.gif')
-
-
-
 
     await bot.process_commands(message)
 
