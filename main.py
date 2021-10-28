@@ -51,12 +51,7 @@ activity = discord.Activity(
 @bot.event
 async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=activity)
-    print("--------------------")
-    print(f'Logged in as {bot.user.name}')
-    print("Connected to servers:")
     for name in bot.guilds:
-        print(f"-- {name} --")
-    print("--------------------")
 
 # announce server join in console if bot is connected to a server after running
 
@@ -64,14 +59,12 @@ async def on_ready():
 @bot.event
 async def on_guild_join(guild):
     name = guild.name
-    print(f"Joined new server: {name}")
 
 
 # announce server leave in console if bot is removed from a server after running
 @bot.event
 async def on_guild_remove(guild):
     name = guild.name
-    print(f"Removed from server: {name}")
 
 
 # start bot commands
@@ -118,15 +111,9 @@ def get_ratelimit(message):
 @bot.event
 async def on_message(message):
     ratelimit = get_ratelimit(message)
+    msg = message.content
     if message.author == bot.user:
         return
-
-    msg = message.content
-
-
-## Responds with random Shoresy quote - quotes found in quotes/quotes.txt ##
-    # Prints message, author, channel, and server info to console
-    # Prints response output to console
 
     if any(word in msg.lower() for word in shoresy):
         mentioned = message.author.mention
@@ -135,73 +122,24 @@ async def on_message(message):
         random_reply = quote_reply.replace("{mention}", mentioned)
         await message.channel.send(random_reply)
 
-        print(
-            f"{message.author.name} | {message.channel} | {message.guild.name} - `{msg}`")
-        print(f"Replied with: '{random_reply}")
-
-
-## Responds with embarrassing.gif ##
-    # Prints message, author, channel, and server info to console
-    # Prints response output to console
-
     if "fucking embarrassing" in msg.lower():
         await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/embarrassing.gif")
-
-        print(
-            f"{message.author.name} | {message.channel}| {message.guild.name} - '{msg}'")
-        print("emarrassing.gif sent to the channel")
-
-
-## Responds with random Shoresy fight comeback - quotes found in quotes/fight.txt##
-    # Prints message, author, channel, and server info to console
-    # Prints response output to console
 
     if any(word in msg.lower() for word in fight_words):
         random_fight = random.choice(fight)
         await message.channel.send(random_fight)
 
-        print(
-            f"{message.author.name} | {message.channel}| {message.guild.name} - '{msg}'")
-        print(f"Responding with '{random_fight}'")
-
-
-## Responds with "'Good'n You"##
-# Prints message, author, channel, and server info to console
-# Prints response output to console
-
     if "how are ya now" in msg.lower():
         await message.channel.send("Good'n you?")
-
-        print(
-            f"{message.author.name} | {message.channel}| {message.guild.name} - '{msg}'")
-        print("Responding with 'Good'n you?'")
-
-
-## Responds with to_be_fair.gif##
-    # Prints message, author, channel, and server info to console
-    # Prints response output to console
 
     if "to be fair" in msg.lower():
         await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/to_be_fair.gif")
 
-        print(
-            f"{message.author.name} | {message.channel}| {message.guild.name} - '{msg}'")
-        print("to_be_fair.gif sent to the channel")
-
-
-## Responds with end_of_the_laneway.jpg##
-    # Prints message, author, channel, and server info to console
-    # Prints response output to console
 
     if "toughest guy" in msg.lower():
         await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/end_of_the_laneway.jpg")
 
-        print(
-            f"{message.author.name} | {message.channel}| {message.guild.name} - '{msg}'")
-        print("end_of_the_laneway.jpg sent to the channel")
-
-
-    if "happy brithday" in msg.lower():
+    if "happy birthday" in msg.lower():
         if ratelimit is None:
             await message.channel.send('https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/birthday.gif')
 
