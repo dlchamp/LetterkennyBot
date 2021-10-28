@@ -52,7 +52,7 @@ activity = discord.Activity(
 async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=activity)
     print("--------------------")
-    print("Logged in as {0.user}.".format(bot))
+    print(f'Logged in as {bot.user.name}')
     print("Connected to servers:")
     for name in bot.guilds:
         print(f"-- {name} --")
@@ -106,9 +106,18 @@ async def invite(ctx,):
         await ctx.send(f"Tried to DM you the invite link, {ctx.author.mention}\nAttaching it here instead.\nhttps://discord.com/api/oauth2/authorize?client_id=873640710480486451&permissions=117760&scope=bot")
 
 
+## Message cooldown
+cd = commands.CooldownMapping.from_cooldown(1,600.0, commands.BucketType.channel)
+
+def get_ratelimit(message):
+    bucket = cd.get_bucket(message)
+    return bucket.update_rate_limit()
+
+
 ## begin discord message and response events ##
 @bot.event
 async def on_message(message):
+    ratelimit = get_ratelimit(message)
     if message.author == bot.user:
         return
 
@@ -190,6 +199,14 @@ async def on_message(message):
         print(
             f"{message.author.name} | {message.channel}| {message.guild.name} - '{msg}'")
         print("end_of_the_laneway.jpg sent to the channel")
+
+
+    if "happy brithday" in msg.lower():
+        if ratelimit is None:
+            await message.channel.send('https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/birthday.gif')
+
+
+
 
     await bot.process_commands(message)
 
