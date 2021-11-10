@@ -69,6 +69,22 @@ async def on_guild_remove(guild):
     print(f'Bot has left {guild.name}')
 
 
+'''
+Invite command - Sends the command user a DM with an invite link for this bot.
+'''
+
+
+@ bot.command(name='invite')
+async def invite(ctx,):
+
+    user = await bot.fetch_user(ctx.author.id)
+    try:
+        await ctx.send(f'Check your DMs, {ctx.author.mention}')
+        await user.send("Invite me to your server with this link.\nhttps://discord.com/api/oauth2/authorize?client_id=873640710480486451&permissions=117760&scope=bot")
+    except:
+        await ctx.send(f"Tried to DM you the invite link, {ctx.author.mention}\nAttaching it here instead.\nhttps://discord.com/api/oauth2/authorize?client_id=873640710480486451&permissions=117760&scope=bot")
+
+
 # Sets on_message cooldown to 10 minutes (600 seconds) for the channel, only in use for 'Happy birhtday' message
 cd = commands.CooldownMapping.from_cooldown(
     1, 600.0, commands.BucketType.channel)
