@@ -69,19 +69,6 @@ async def on_guild_remove(guild):
     print(f'Bot has left {guild.name}')
 
 
-@bot.command()
-async def help(ctx):
-
-    embed = nextcord.Embed(
-        title='\u200b', description='`-help` to bring up this menu')
-    embed.set_author(name='LetterkennyBot',
-                     icon_url='https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/container_icon.png')
-    embed.add_field(
-        name='Phrases', value='"Fuck you shoresy"\n"To be fair"\n"How are ya now"\n"What\'s gunna happen?"\n"Fucking embarrassing"\n"toughest guy in Letterkenny"\n"happy birthday"')
-
-    await ctx.send(embed=embed)
-
-
 # Sets on_message cooldown to 10 minutes (600 seconds) for the channel, only in use for 'Happy birhtday' message
 cd = commands.CooldownMapping.from_cooldown(
     1, 600.0, commands.BucketType.channel)
@@ -95,12 +82,12 @@ def get_ratelimit(message):
 @ bot.event
 async def on_message(message):
     ratelimit = get_ratelimit(message)
+    mentioned = message.author.mention
     msg = message.content
     if message.author == bot.user:
         return
 
     if any(word in msg.lower() for word in shoresy):
-        mentioned = message.author.mention
         reply_list = random.choices(quote, k=3)
         quote_reply = random.choice(reply_list)
         random_reply = quote_reply.replace("{mention}", mentioned)
@@ -125,6 +112,9 @@ async def on_message(message):
     if "happy birthday" in msg.lower():
         if ratelimit is None:
             await message.channel.send('https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/birthday.gif')
+
+    if "what i appreciates" in msg.lower():
+        await message.channel.send(f'Take about 10 to 15% off\'er there, {mentioned}')
 
     # Required to allow bot to process commands
     await bot.process_commands(message)
