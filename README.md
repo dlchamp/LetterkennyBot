@@ -12,14 +12,15 @@ as I hone my knowledge and skills.
 
 
 
-## Using the bot
-* Bot responds to "Fuck you shoresy" (any variation) - will respond with a randomly selected string located in quotes/quotes.txt, mentions user that invoked response
-* One response will include "Fight me, see what happens" - user can then respond with "What's going to happen?" (or any variation) and will be replied to with a  
-with a randomly selected quote from quotes/fight.txt
-* Bot responds to "to be fair" (any variation) with To_be_fair.gif (scene from show)
-* Bot responds to Birthay wishes with super soft birthday gif - has 10 minute cooldown to prevent spam on multiple birthday wishes in quick succession.
-* Bot reponds to "Fucking embarrasing" (any variation) with trashcan kick .gif
-* Bot responds to "toughest guy" (any variation) with end_of_the_laneway.jpg
+## Phrases the bot responds to
+1. "Fuck you shoresy" (most variations)
+2. "What's gunna happen?"" (most variations)
+3. "Fucking embarrassing"
+4. "How are ya now"
+5. "To be fair"
+6. "Toughest guy"
+7. "Happy birthday"
+8. That's "what I appreciates" about you (quoted section is what's being checked - complete sentence isn't required)
 
 
 ### Dependencies
