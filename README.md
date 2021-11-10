@@ -1,12 +1,14 @@
 # LetterkennyBot
 
-See more information on [Github](https://github.com/dlchamp/LetterkennyBot)
+A simple Discord bot written in Python using the Nextcord wrapper for Discord.  This bot will monitor channels for specific phrases and respond to them with over 40 quotes from the show.
 
 ## Description
 
 As part of my Python learning experience I wanted to try my hand and building a discord bot that could also be ran in Docker since I use unRAID.
 My friends and I are pretty big Letterkenny fans and we've come across a couple Discord bots based around quotes from the show, specifically Shoresy, but they   
-seemed to be lacking a lot of the quotes, and missing other features to make the bot more fun.  I decided to improve on this idea by including 40 quotes from Shoresy (will be updating as more seasons come out.)  This is the very first project I've ever completed in Python and I'm sure that the code would be cleaner and more optimized, but it does work well in it's current version and I will be updating and optimizing as I hone my knowledge and skills.
+seemed to be lacking a lot of the quotes, and missing other features to make the bot more fun.  I decided to improve on this idea by including 40 quotes from Shoresy (will be updating as more seasons come out.)
+This is the very first project I've ever completed in Python and I'm sure that the code would be cleaner and more optimized, but it does work well in it's current version and I will be updating and optimizing
+as I hone my knowledge and skills.
 
 
 
