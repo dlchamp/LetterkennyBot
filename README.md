@@ -77,7 +77,7 @@ then import your bot token into Replit per their [instructions](https://docs.rep
 
 ## Version History
 
-*2.0
+* 2.0
     * Formatted following PEP8 guidelines
     * Migrated to Nextcord
     * Moved to using github links to gifs as sending the file appears to slow responses slightly vs just submitting a link and letting Discord display the animated file.
