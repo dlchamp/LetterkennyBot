@@ -43,10 +43,6 @@ activity = nextcord.Activity(
 Start Discord event functions.
 '''
 
-# On Ready event - When bot has connected to Discord and has become ready, print:
-# Bot name, bot ID, and guilds that bot is currecntly connected to.
-
-
 @bot.event
 async def on_ready():
     await bot.change_presence(status=nextcord.Status.online, activity=activity)
