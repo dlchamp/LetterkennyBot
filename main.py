@@ -36,15 +36,13 @@ Setup bot and configure status
 bot = commands.Bot(command_prefix="-", help_command=None,
                    case_insensitive=True)
 
+
 activity = nextcord.Activity(
-    type=nextcord.ActivityType.watching, name="-help")
+    type=nextcord.ActivityType.watching, name="Letterkenny")
 
 '''
 Start Discord event functions.
 '''
-
-# On Ready event - When bot has connected to Discord and has become ready, print:
-# Bot name, bot ID, and guilds that bot is currecntly connected to.
 
 
 @bot.event
@@ -74,15 +72,10 @@ Invite command - Sends the command user a DM with an invite link for this bot.
 '''
 
 
-@ bot.command(name='invite')
-async def invite(ctx,):
-
-    user = await bot.fetch_user(ctx.author.id)
-    try:
-        await ctx.send(f'Check your DMs, {ctx.author.mention}')
-        await user.send("Invite me to your server with this link.\nhttps://discord.com/api/oauth2/authorize?client_id=873640710480486451&permissions=117760&scope=bot")
-    except:
-        await ctx.send(f"Tried to DM you the invite link, {ctx.author.mention}\nAttaching it here instead.\nhttps://discord.com/api/oauth2/authorize?client_id=873640710480486451&permissions=117760&scope=bot")
+@bot.command(name='invite')
+async def invite(ctx):
+    if isinstance(ctx.channel, nextcord.DMChannel):
+        await ctx.author.send("Invite me to your server with this link.\nhttps://discord.com/api/oauth2/authorize?client_id=873640710480486451&permissions=117760&scope=bot")
 
 
 # Sets on_message cooldown to 10 minutes (600 seconds) for the channel, only in use for 'Happy birhtday' message
@@ -95,7 +88,7 @@ def get_ratelimit(message):
     return bucket.update_rate_limit()
 
 
-@ bot.event
+@bot.event
 async def on_message(message):
     ratelimit = get_ratelimit(message)
     mentioned = message.author.mention
