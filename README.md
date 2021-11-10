@@ -59,7 +59,7 @@ as I hone my knowledge and skills.
 9. *Add another Path, Port, Variable, Label or Device
 10. Switch config type to *Variable
 11. Name - TOKEN
-12. Key - TOKEN
+12. Key - *paste your token*
 13. Value - paste token from Discord Developer Bot you created earlier in **Setting up Discord Bot - step 7**
 14. *Add*
 15. *Apply* - Image will be pulled, container will build and start automatically.
