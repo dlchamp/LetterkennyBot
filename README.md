@@ -6,7 +6,7 @@ See more information on [Github](https://github.com/dlchamp/LetterkennyBot)
 
 As part of my Python learning experience I wanted to try my hand and building a discord bot that could also be ran in Docker since I use unRAID.
 My friends and I are pretty big Letterkenny fans and we've come across a couple Discord bots based around quotes from the show, specifically Shoresy, but they   
-seemed to be lacking a lot of the quotes, and missing other features to make the bot more fun.  I decided to improve on this idea by including 25 quotes from Shoresy (will be updating as more seasons come out.)  This is the very first project I've ever completed in Python and I'm sure that the code would be cleaner and more optimized, but it does work well in it's current version and I will be updating and optimizing as I hone my knowledge and skills.
+seemed to be lacking a lot of the quotes, and missing other features to make the bot more fun.  I decided to improve on this idea by including 40 quotes from Shoresy (will be updating as more seasons come out.)  This is the very first project I've ever completed in Python and I'm sure that the code would be cleaner and more optimized, but it does work well in it's current version and I will be updating and optimizing as I hone my knowledge and skills.
 
 
 
@@ -15,14 +15,14 @@ seemed to be lacking a lot of the quotes, and missing other features to make the
 * One response will include "Fight me, see what happens" - user can then respond with "What's going to happen?" (or any variation) and will be replied to with a  
 with a randomly selected quote from quotes/fight.txt
 * Bot responds to "to be fair" (any variation) with To_be_fair.gif (scene from show)
-* Bot responds to Birthay wishes with super soft birthday gif - has 5 minute cooldown to prevent spam on multiple birthday wishes in quick succession.
+* Bot responds to Birthay wishes with super soft birthday gif - has 10 minute cooldown to prevent spam on multiple birthday wishes in quick succession.
 * Bot reponds to "Fucking embarrasing" (any variation) with trashcan kick .gif
 * Bot responds to "toughest guy" (any variation) with end_of_the_laneway.jpg
 
 
 ### Dependencies
 
-* Built on the latest [Python3 - 3.9.6](https://www.python.org/downloads/)
+* Built on the latest [Python3 - 3.9.7](https://www.python.org/downloads/)
 * see requirements.txt for Python dependencies
 * Python installed with PATH access in Windows
 
@@ -62,4 +62,29 @@ with a randomly selected quote from quotes/fight.txt
 15. *Apply* - Image will be pulled, container will build and start automatically.
 16. Profit.
 
+** Windows Installation and Run**
+1. Download this repo and extract to a location
+2. Open command and navigate inside of bot's directory
+3. Open the .env-sample file in a text editor and paste in your copied token, save, and rename the .env-sample to .env
+4. Run `python -u main.py`
 
+## Notes
+- This should be able to be imported directly into Replit and ran without much hassle.  simply remove the `from dotenv import load_dotenv` line as it won't be needed,
+then import your bot token into Replit per their [instructions](https://docs.replit.com/archive/secret-keys)
+
+
+## Version History
+
+*2.0
+    * Formatted following PEP8 guidelines
+    * Migrated to Nextcord
+    * Moved to using github links to gifs as sending the file appears to slow responses slightly vs just submitting a link and letting Discord display the animated file.
+
+* 1.2
+    * Added -help command to display phrase the bot is listening for.
+
+* 1.1
+    * Added more quotes, removed "Happy birthday" on_message since it was spamming when multiple members were wishing someone "Happy Birthday"
+
+* 1.0
+    * Initial commit.
