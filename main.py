@@ -44,6 +44,7 @@ activity = nextcord.Activity(
 Start Discord event functions.
 '''
 
+
 @bot.event
 async def on_ready():
     await bot.change_presence(status=nextcord.Status.online, activity=activity)
