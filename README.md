@@ -2,7 +2,7 @@
 
 A simple Discord bot written in Python using the Nextcord wrapper for Discord.  This bot will monitor channels for specific phrases and respond to them with over 40 quotes from the show.
 
-If you don't wish to self host, you can always just invite me to your server!
+If you don't wish to self host, you can always just invite me to your server!  
 https://discord.com/api/oauth2/authorize?client_id=873640710480486451&permissions=117760&scope=bot
 
 ## Description
