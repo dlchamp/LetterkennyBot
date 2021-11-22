@@ -29,6 +29,8 @@ fight_words = ["what's gunna happen", "whats gunna happen", "what's gonna happen
 
 shoresy = ['fuck you shoresy', 'fuck you, shoresy']
 
+how_are_ya = ['how\'re ya now', 'how are ya now', 'how\'r ya now']
+
 
 '''
 Setup bot and configure status
@@ -109,7 +111,7 @@ async def on_message(message):
         random_fight = random.choice(fight)
         await message.channel.send(random_fight)
 
-    if "how are ya now" in msg.lower():
+    if any(word in msg.lower() for word in how_are_ya):
         await message.channel.send("Good'n you?")
 
     if "to be fair" in msg.lower():
