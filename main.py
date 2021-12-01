@@ -29,6 +29,8 @@ fight_words = ["what's gunna happen", "whats gunna happen", "what's gonna happen
 
 shoresy = ['fuck you shoresy', 'fuck you, shoresy']
 
+shoresy_wrong = ['fuck you shorsey','fuck you, shorsey']
+
 how_are_ya = ['how\'re ya now', 'how are ya now', 'how\'r ya now']
 
 
@@ -102,6 +104,12 @@ async def on_message(message):
         reply_list = random.choices(quote, k=3)
         quote_reply = random.choice(reply_list)
         random_reply = quote_reply.replace("{mention}", mentioned)
+        await message.channel.send(random_reply)
+
+    if any(word in msg.lower() for word in shoresy_wrong):
+        reply_list = random.choices(quote, k=3)
+        quote_reply = random.choice(reply_list)
+        random_reply = f'Fuck you, {mentioned}. You can\'t even spell my name right. Give yer balls a tug.'
         await message.channel.send(random_reply)
 
     if "fucking embarrassing" in msg.lower():
