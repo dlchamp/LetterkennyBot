@@ -42,7 +42,7 @@ bot = commands.Bot(command_prefix="-", help_command=None,
 
 
 activity = nextcord.Activity(
-    type=nextcord.ActivityType.watching, name="Letterkenny")
+    type=nextcord.ActivityType.watching, name="Letterkenny S10")
 
 '''
 Start Discord event functions.

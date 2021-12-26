@@ -1,5 +1,6 @@
 # LetterkennyBot
 
+Now includes best of Season 10 Shoresy!
 A simple Discord bot written in Python using the Nextcord wrapper for Discord.  This bot will monitor channels for specific phrases and respond to them with over 40 quotes from the show.
 
 If you don't wish to self host, you can always just invite me to your server!  
@@ -80,6 +81,9 @@ then import your bot token into Replit per their [instructions](https://docs.rep
 
 
 ## Version History
+
+* 2.1
+    * Updated quotes.txt to include the best of Season 10 Shoresy!
 
 * 2.0
     * Formatted following PEP8 guidelines
