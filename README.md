@@ -1,24 +1,24 @@
 # LetterkennyBot
 
+## Description
+
 Now includes best of Season 10 Shoresy!
 A simple Discord bot written in Python using the Nextcord wrapper for Discord.  This bot will monitor channels for specific phrases and respond to them with over 40 quotes from the show.
 
 If you don't wish to self host, you can always just invite me to your server!  
 https://discord.com/api/oauth2/authorize?client_id=873640710480486451&permissions=117760&scope=bot
 
-## Description
-
-As part of my Python learning experience I wanted to try my hand and building a discord bot that could also be ran in Docker since I use unRAID.
-My friends and I are pretty big Letterkenny fans and we've come across a couple Discord bots based around quotes from the show, specifically Shoresy, but they   
-seemed to be lacking a lot of the quotes, and missing other features to make the bot more fun.  I decided to improve on this idea by including 40 quotes from Shoresy (will be updating as more seasons come out.)
-This is the very first project I've ever completed in Python and I'm sure that the code would be cleaner and more optimized, but it does work well in it's current version and I will be updating and optimizing
-as I hone my knowledge and skills.
+### New Feature(s)
+Using the "Fuck you, Shoresy" hot phrase will add your Discord ID to a database. This database is only used to randomly select a member to replace "Reilly" or "Jonesy" in quotes where both characters would be roasted by Shoresy.
+Users will be able to remove their ID from this databse if they wish with a simple `-remove` command.
+(*Quote Exmample: "Fuck you, `@Reilly`. Your mum sneaky gushed so hard she bucked me off the waterbed last night. Don\'t tell her I was thinking about `@Jonesy\'s` mum the entire time."*)
 
 
+## Bot Usage
 
-## Phrases the bot responds to
+### Phrases the bot responds to
 1. "Fuck you shoresy" (most variations)
-2. "What's gunna happen?"" (most variations)
+2. "What's gunna happen?" (most variations)
 3. "Fucking embarrassing"
 4. "How are ya now"
 5. "To be fair"
@@ -26,6 +26,10 @@ as I hone my knowledge and skills.
 7. "Happy birthday"
 8. That's "what I appreciates" about you (quoted section is what's being checked - complete sentence isn't required)
 
+### Commands
+ - `-remove` - Remove the user's Discord ID from the database
+
+## Self Hosting
 
 ### Dependencies
 
@@ -33,9 +37,9 @@ as I hone my knowledge and skills.
 * see requirements.txt for Python dependencies
 * Python installed with PATH access in Windows
 
-## Getting Started
+### Getting Started
 
-**Setting up Discord Bot**
+#### Setting up Discord Bot
 1. Login to Discord web - https://discord.com
 2. Navigate to Discord Developer Portal - https://discord.com/developers/applications
 3. Click *New Application*
@@ -51,7 +55,7 @@ as I hone my knowledge and skills.
 13. Copy the generated link and Go to the URL in your browser - Invite Bot to your Discord server
 
 
-**Unraid Docker Installation and Run**
+#### Unraid Docker Installation and Run
 1. Navigate to Docker tab
 2. *Add container*
 3. Give it a name - "LetterkennyBot"
@@ -69,23 +73,31 @@ as I hone my knowledge and skills.
 15. *Apply* - Image will be pulled, container will build and start automatically.
 16. Profit.
 
-** Windows Installation and Run**
+#### Windows Installation and Run
 1. Download this repo and extract to a location
 2. Open command and navigate inside of bot's directory
 3. Open the .env-sample file in a text editor and paste in your copied token, save, and rename the .env-sample to .env
 4. Run `python -u main.py`
 
-## Notes
-- This should be able to be imported directly into Replit and ran without much hassle.  simply remove the `from dotenv import load_dotenv` line as it won't be needed,
-then import your bot token into Replit per their [instructions](https://docs.replit.com/archive/secret-keys)
+
+&nbsp;
+___
+
 
 
 ## Version History
 
-* 2.1
+* 2.0
+    * Resctructed and reorganized files and functions. - seperated functions out of main.py
+    * Added JSON "database" for storing Discord member IDs for quotes with 2 `@mentions`
+    * Added `-remove` command to allow users to remove themselves from the database.
+    * Added back the `-help` command. Includes data usage disclaimer
+    * All changes since 1.4 have been pushed into this update.
+
+* 1.4
     * Updated quotes.txt to include the best of Season 10 Shoresy!
 
-* 2.0
+* 1.3
     * Formatted following PEP8 guidelines
     * Migrated to Nextcord
     * Moved to using github links to gifs as sending the file appears to slow responses slightly vs just submitting a link and letting Discord display the animated file.
