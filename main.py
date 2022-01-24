@@ -25,7 +25,7 @@ Setup bot and configure status
 bot = commands.Bot(command_prefix="-", help_command=None,
                    case_insensitive=True)
 activity = nextcord.Activity(
-    type=nextcord.ActivityType.watching, name="Letterkenny S10")
+    type=nextcord.ActivityType.watching, name="Season 10 | -help")
 
 
 @bot.event
@@ -128,7 +128,7 @@ async def on_message(message):
             await message.channel.send('https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/birthday.gif')
 
     if "what i appreciates" in msg.lower():
-        await message.channel.send(f'Take about 10 to 15% off\'er there, {mentioned}')
+        await message.channel.send(f'Take about 10 to 15% off\'er there, {mention}')
 
     # Required to allow bot to process commands
     await bot.process_commands(message)
