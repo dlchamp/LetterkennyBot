@@ -111,7 +111,7 @@ async def on_message(message):
         await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/embarrassing.gif")
 
     if any(word in msg.lower() for word in fight_words):
-        reply = get_fight_words(guild_id, member_id)
+        reply = rand.get_fight_words(guild_id, member_id)
         await message.channel.send(reply)
 
     if any(word in msg.lower() for word in how_are_ya):
