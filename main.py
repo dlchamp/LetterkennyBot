@@ -1,10 +1,17 @@
-import os
-import random
+from disnake import (
+    Activity,
+    ActivityType,
+    Status,
+    Intents
+    )
+from disnake.ext import commands, tasks
 
-import nextcord
-from nextcord.ext import commands
+from os import getenv
 from dotenv import load_dotenv
+from random import choice
+from asyncio import sleep
 
+# local imports
 import func.cache as db
 import func.random_resp as rand
 
@@ -12,40 +19,75 @@ import func.random_resp as rand
 '''
 Trigger phrases/words
 '''
-fight_words = ["what's gunna happen", "whats gunna happen", "what's gonna happen",
-               "whats gonna happen", "what's going to happen", "whats going to happen"]
-shoresy = ['fuck you shoresy', 'fuck you, shoresy']
-shoresy_wrong = ['fuck you shorsey', 'fuck you, shorsey']
-how_are_ya = ['how\'re ya now', 'how are ya now', 'how\'r ya now']
+fight_words = [
+    "what's gunna happen", "whats gunna happen",
+    "what's gonna happen", "whats gonna happen",
+    "what's going to happen", "whats going to happen"
+    ]
+
+shoresy = [
+    'fuck you shoresy', 'fuck you, shoresy'
+    ]
+
+shoresy_wrong = [
+    'fuck you shorsey', 'fuck you, shorsey'
+    ]
+
+how_are_ya = [
+    'how\'re ya now', 'how are ya now',
+    'how\'r ya now'
+    ]
+
+shoresy_wrong_resp = [
+    'Fuck you {mention}, can\'t even spell my name. Give yer balls a tug.',
+    'Wish you weren\'t so fuckin\' akward, bud.',
+    'Fuck, Lemony Snicket. What Series of Unfortunate Events you been through, you ugly fuck?'
+    ]
 
 
-'''
-Setup bot and configure status
-'''
-bot = commands.Bot(command_prefix="-", help_command=None,
-                   case_insensitive=True)
-activity = nextcord.Activity(
-    type=nextcord.ActivityType.watching, name="Season 10 | -help")
+# list of activities
+statuses = [
+    '-help | Rewatching Letterkenny', '-help | Chirping in {guild_count} guilds.',
+    '-help | Crushing sandos', '-help | Fuckin\' Reilly and Jonesy\'s moms',
+    '-help | Ref\'ing girls hockey'
+    ]
+
+used_statuses = []
 
 
-@bot.event
+# instantiate the bot, declare intents, and set activity status
+# Intents.members - only necessary for calculating activity for "serving guilds/chirping memer #"
+intents = Intents.default()
+intents.members=True
+
+bot = commands.Bot(
+    command_prefix="-",
+    help_command=None,
+    case_insensitive=True,
+    intents=intents
+    )
+
+
+
+@bot.listen()
 async def on_ready():
-    await bot.change_presence(status=nextcord.Status.online, activity=activity)
-    print('--------------------')
-    print(
-        f'Bot is online and ready!')
-    print(f'Connected to {len(bot.guilds)} guild(s)')
-    for guild in bot.guilds:
-        print(f'{guild.name} ({guild.id})')
-    print('--------------------')
+
+    print()
+    print(f'{bot.user} is alive and listening to Discord events')
+    print('-'*30)
+    print(f'Connected to: {len(bot.guilds)} guild(s)')
+    print('\n'.join(
+        [f'{guild.name} ({guild.id}) | Members: {len(guild.members)}' for guild in bot.guilds]
+        ))
+    print('-'*30)
 
 
-@bot.event
+@bot.listen()
 async def on_guild_join(guild):
-    print(f'Bot has connected to {guild.name}')
+    print(f'Bot has connected to {guild.name} ({guild.id}) | Members: {len(guild.members)}')
 
 
-@bot.event
+@bot.listen()
 async def on_guild_remove(guild):
     print(f'Bot has left {guild.name}')
 
@@ -65,23 +107,28 @@ async def remove_member(ctx):
 
 @bot.command(name='help')
 async def help_command(ctx):
-    embed = nextcord.Embed(title='LetterkennyBot Help',
-                           description=f'{bot.user.name} brings you over 50 of your favorite chips from gang. These tips should help get you and your friends on the way to getting roasted.')
-    embed.add_field(name='Hotwords/Phrase', value='"Fuck you, Shoresy"\n"Fucking embarrassing"\n \
-        "How are ya now"\n"To be fair"\n"Toughest guy"\n"Happy Birthday" (*10 minute usage cooldown*)\n"what I appreciates"', inline=False)
+    embed = nextcord.Embed(
+        title='LetterkennyBot Help',
+        description=f'{bot.user.name} brings you over 50 of your favorite chips from gang. These tips should help get you and your friends on the way to getting roasted.')
+
     embed.add_field(
-        name='Commands', value=f'`{ctx.prefix}remove` - Removes your Discord ID from the database.', inline=False)
-    embed.add_field(name='Data usage information:',
-                    value=f'Using the "Fuck you, Shoresy" hot phrase will add your Discord ID to a database. \
-                    This database is only used to randomly select a member to replace "Reilly" or "Jonesy" in quotes. \
-                    You can delete your ID from this list at anytime with `{ctx.prefix}remove`\n \
-                    (*Example: "Fuck you, `@Reilly`. Your mum sneaky gushed so hard she bucked me off the waterbed last night. Don\'t tell her I was thinking about `@Jonesy\'s` mum the entire time."*)', inline=False)
+        name='Hotwords/Phrase',
+        value='"Fuck you, Shoresy"\n"Fucking embarrassing"\n"How are ya now"\n"To be fair"\n"Toughest guy"\n"Happy Birthday" (*10 minute usage cooldown*)\n"what I appreciates"', inline=False)
+
+    embed.add_field(
+        name='Commands',
+        value=f'`{ctx.prefix}remove` - Removes your Discord ID from the database.', inline=False)
+
+    embed.add_field(
+        name='Data usage information:',
+        value=f'Using the "Fuck you, Shoresy" hot phrase will add your Discord ID to a database. This database is only used to randomly select a member to replace "Reilly" or "Jonesy" in quotes. You can delete your ID from this list at anytime with `{ctx.prefix}remove`\n(*Example: "Fuck you, `@Reilly`. Your mum sneaky gushed so hard she bucked me off the waterbed last night. Don\'t tell her I was thinking about `@Jonesy\'s` mum the entire time."*)', inline=False)
+
     await ctx.send(embed=embed)
 
 
-# Sets on_message cooldown to 10 minutes (600 seconds) for the channel, only in use for 'Happy birhtday' message
+# Sets on_message cooldown to 10 minutes (600 seconds) for the guild, only in use for 'Happy birhtday' message
 cd = commands.CooldownMapping.from_cooldown(
-    1, 600.0, commands.BucketType.channel)
+    1, 600.0, commands.BucketType.guild)
 
 
 def get_ratelimit(message):
@@ -89,7 +136,7 @@ def get_ratelimit(message):
     return bucket.update_rate_limit()
 
 
-@bot.event
+@bot.listen()
 async def on_message(message):
     if message.author.bot:
         return
@@ -104,7 +151,7 @@ async def on_message(message):
         await message.channel.send(reply)
 
     if any(word in msg.lower() for word in shoresy_wrong):
-        reply = f'Fuck you, {mention}. You can\'t even spell my name right. Give yer balls a tug.'
+        reply = choice(shoresy_wrong_resp).replace('{mention}', mention)
         await message.channel.send(reply)
 
     if "fucking embarrassing" in msg.lower():
@@ -130,8 +177,44 @@ async def on_message(message):
     if "what i appreciates" in msg.lower():
         await message.channel.send(f'Take about 10 to 15% off\'er there, {mention}')
 
-    # Required to allow bot to process commands
-    await bot.process_commands(message)
 
-load_dotenv()
-bot.run(os.environ['TOKEN'])
+
+@tasks.loop(minutes=1)
+async def update_status(bot, statuses, used_statuses):
+    '''task loop that randomly updates bot status every minute'''
+
+    # wait for bot internal cache is ready - only matters during first run
+    await bot.wait_until_ready()
+
+    # get guild data
+    guild_count = str(len(bot.guilds))
+    mem_count = sum([len(guild.members) for guild in bot.guilds])
+
+
+    while True:
+        ran_status = choice(statuses).replace('{guild_count}', guild_count)
+
+        if len(statuses) == len(used_statuses):
+            used_statuses.clear()
+
+        if not ran_status in used_statuses:
+            used_statuses.append(ran_status)
+
+            #set the activity type and name
+            activity = Activity(type=ActivityType.streaming, name=ran_status)
+
+            # update the status
+            await bot.change_presence(status=Status.online, activity=activity)
+            print(f'Status updated: {ran_status}')
+
+            break
+
+
+
+
+if __name__ == '__main__':
+
+    load_dotenv()
+    update_status.start(bot, statuses, used_statuses)
+    bot.run(getenv('TOKEN'))
+
