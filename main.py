@@ -2,7 +2,8 @@ from disnake import (
     Activity,
     ActivityType,
     Status,
-    Intents
+    Intents,
+    Embed
     )
 from disnake.ext import commands, tasks
 
@@ -107,7 +108,7 @@ async def remove_member(ctx):
 
 @bot.command(name='help')
 async def help_command(ctx):
-    embed = nextcord.Embed(
+    embed = Embed(
         title='LetterkennyBot Help',
         description=f'{bot.user.name} brings you over 50 of your favorite chips from gang. These tips should help get you and your friends on the way to getting roasted.')
 
