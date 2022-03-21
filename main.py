@@ -46,18 +46,20 @@ shoresy_wrong_resp = [
     ]
 
 
-# list of activities
-statuses = [
-    '-help | Rewatching Letterkenny', '-help | Chirping in {guild_count} guilds.',
-    '-help | Crushing sandos', '-help | Fuckin\' Reilly and Jonesy\'s moms',
-    '-help | Ref\'ing girls hockey'
-    ]
+# # list of activities
+# statuses = [
+#     "-help | Rewatching Letterkenny",
+#     "-help | Chirpin' {guild_count} guilds.",
+#     "-help | Crushing sandos",
+#     "-help | Yahtzee",
+#     "-help | Ref'ing girls hockey"
+#     ]
 
-used_statuses = []
+# used_statuses = []
 
 
 # instantiate the bot, declare intents, and set activity status
-# Intents.members - only necessary for calculating activity for "serving guilds/chirping memer #"
+# Intents.members - only necessary for calculating activity for "serving guilds/chirping member #"
 intents = Intents.default()
 intents.members=True
 
@@ -151,64 +153,67 @@ async def on_message(message):
         reply = rand.get_shoresy_quote(mention, guild_id, member_id)
         await message.channel.send(reply)
 
-    if any(word in msg.lower() for word in shoresy_wrong):
+    elif any(word in msg.lower() for word in shoresy_wrong):
         reply = choice(shoresy_wrong_resp).replace('{mention}', mention)
         await message.channel.send(reply)
 
-    if "fucking embarrassing" in msg.lower():
+    elif "fucking embarrassing" in msg.lower():
         await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/embarrassing.gif")
 
-    if any(word in msg.lower() for word in fight_words):
+    elif any(word in msg.lower() for word in fight_words):
         reply = rand.get_fight_words(guild_id, member_id)
         await message.channel.send(reply)
 
-    if any(word in msg.lower() for word in how_are_ya):
+    elif any(word in msg.lower() for word in how_are_ya):
         await message.channel.send("Good'n you?")
 
-    if "to be fair" in msg.lower():
+    elif "to be fair" in msg.lower():
         await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/to_be_fair.gif")
 
-    if "toughest guy" in msg.lower():
+    elif "toughest guy" in msg.lower():
         await message.channel.send("https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/end_of_the_laneway.jpg")
 
-    if "happy birthday" in msg.lower():
+    elif "happy birthday" in msg.lower():
         if ratelimit is None:
             await message.channel.send('https://raw.githubusercontent.com/dlchamp/LetterkennyBot/main/img/birthday.gif')
 
-    if "what i appreciates" in msg.lower():
+    elif "what i appreciates" in msg.lower():
         await message.channel.send(f'Take about 10 to 15% off\'er there, {mention}')
 
 
 
-@tasks.loop(minutes=1)
-async def update_status(bot, statuses, used_statuses):
+@tasks.loop(count=1)
+async def update_status(bot):
     '''task loop that randomly updates bot status every minute'''
 
     # wait for bot internal cache is ready - only matters during first run
     await bot.wait_until_ready()
 
+    activity = Activity(type=ActivityType.listening, name='-help')
+    await bot.change_presence(status=Status.online, activity=activity)
+
     # get guild data
-    guild_count = str(len(bot.guilds))
-    mem_count = sum([len(guild.members) for guild in bot.guilds])
+    # guild_count = str(len(bot.guilds))
+    # mem_count = sum([len(guild.members) for guild in bot.guilds])
 
 
-    while True:
-        ran_status = choice(statuses).replace('{guild_count}', guild_count)
+    # while True:
+    #     ran_status = choice(statuses).replace('{guild_count}', guild_count)
 
-        if len(statuses) == len(used_statuses):
-            used_statuses.clear()
+    #     if len(statuses) == len(used_statuses):
+    #         used_statuses.clear()
 
-        if not ran_status in used_statuses:
-            used_statuses.append(ran_status)
+    #     if not ran_status in used_statuses:
+    #         used_statuses.append(ran_status)
 
-            #set the activity type and name
-            activity = Activity(type=ActivityType.streaming, name=ran_status)
+    #         #set the activity type and name
+    #         activity = Activity(type=ActivityType.streaming, name=ran_status)
 
-            # update the status
-            await bot.change_presence(status=Status.online, activity=activity)
-            print(f'Status updated: {ran_status}')
+    #         # update the status
+    #         await bot.change_presence(status=Status.online, activity=activity)
+    #         print(f'Status updated: {ran_status}')
 
-            break
+    #         break
 
 
 
@@ -216,6 +221,9 @@ async def update_status(bot, statuses, used_statuses):
 if __name__ == '__main__':
 
     load_dotenv()
-    update_status.start(bot, statuses, used_statuses)
+    update_status.start(bot)
     bot.run(getenv('TOKEN'))
+
+
+
 
