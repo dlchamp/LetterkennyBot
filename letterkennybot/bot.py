@@ -29,6 +29,7 @@ async def bot_ready():
         f"Python Version: {py_version}\n"
         f"Disnake Version: {disnake_version}\n"
         f"Bot Version: {bot_version}\n"
+        f"Connected to {len(bot.guilds)} guilds\n"
         "------------------------------"
     )
 
