@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "LetterkennyBot"
+version = "2.1.0"
+description = "Chirp your Discord members with quotes from Letterkenny and Shoresy"
+authors = ["DLCHAMP <36091350+dlchamp@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+black = "^22.6.0"
+SQLAlchemy = {extras = ["asyncio"], version = "^1.4.39"}
+disnake = "^2.5.1"
+aiosqlite = "^0.17.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

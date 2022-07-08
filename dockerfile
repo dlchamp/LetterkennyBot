@@ -1,18 +1,28 @@
-FROM python:3.10.0rc1-buster
+FROM python:3.9-slim as os-base
 
-#Create application directory
-RUN mkdir /app
-WORKDIR /app
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV POETRY_VERSION=1.1.13
+RUN apt-get update
+RUN apt-get install -y curl
 
-#Install dependcies
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+FROM os-base as poetry-base
 
-#Copy source code
-COPY . /app/
+RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+ENV PATH="/root/.poetry/bin:$PATH"
+RUN poetry config virtualenvs.create false
+RUN apt-get remove -y curl
 
-#Run application
+FROM poetry-base as app-base
 
-CMD ["python","-u", "main.py"]
+ARG APPDIR=/app
+WORKDIR $APPDIR/
+COPY . .
+COPY pyproject.toml ./pyproject.toml
+RUN poetry install --no-dev
 
+FROM app-base as main
 
+CMD tail -f /dev/null
+
+CMD ["python", "-u", "main.py"]
