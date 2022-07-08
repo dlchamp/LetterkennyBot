@@ -1,4 +1,4 @@
-from disnake import ApplicationCommandInteraction
+from disnake import ApplicationCommandInteraction, Embed
 from disnake.ext.commands import Cog, slash_command
 
 
