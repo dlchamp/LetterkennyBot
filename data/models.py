@@ -8,7 +8,8 @@ Base = declarative_base()
 
 class Members(Base):
     """
-    Class that represents the 'members' table"""
+    Class that represents the 'members' table
+    """
 
     __tablename__ = "members"
 
@@ -18,7 +19,7 @@ class Members(Base):
 
 
 engine = create_async_engine("sqlite+aiosqlite:///data/data.db")
-# engine = create_async_engine("sqlite+aiosqlite:///data.db")
+`
 
 async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
