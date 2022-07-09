@@ -8,9 +8,7 @@ Base = declarative_base()
 
 class Members(Base):
     """
-    Class that represents the 'members' table in the database
-    This table contains information about currently open tickets for the guild
-    """
+    Class that represents the 'members' table"""
 
     __tablename__ = "members"
 
