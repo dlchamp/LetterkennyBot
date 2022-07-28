@@ -28,17 +28,21 @@ async def add_member(member_id: int, guild_id: int) -> None:
                 await session.commit()
 
 
-async def remove_member(member_id: int, guild_id: int) -> None:
+async def remove_member(member_id: int, guild_id: int, *, all: bool) -> None:
     """Removes the member from the database for the guild"""
+    if all:
+        statement = delete(Members).where(Members.member_id == member_id)
+    else:
+        statement = (
+            delete(Members)
+            .where(Members.member_id == member_id)
+            .where(Members.guild_id == guild_id)
+        )
 
     async with async_session() as session:
         async with session.begin():
 
-            await session.execute(
-                delete(Members)
-                .where(Members.member_id == member_id)
-                .where(Members.guild_id == guild_id)
-            )
+            await session.execute(statement)
 
 
 async def get_random_member(member_id: int, guild_id: int) -> int:

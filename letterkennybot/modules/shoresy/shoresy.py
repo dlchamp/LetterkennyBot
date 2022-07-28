@@ -45,7 +45,10 @@ class Shoresy(Cog):
         ----------
         all: (Default False) Remove your ID from database for all guild references"""
         try:
-            await query.remove_member(interaction.author.id, interaction.guild.id)
+            await query.remove_member(
+                interaction.author.id, interaction.guild.id
+                all=all
+            )
         except Exception as e:
             await interaction.response.send_message(
                 "There was an error. It has been logged, please try again later",
@@ -53,6 +56,11 @@ class Shoresy(Cog):
             )
 
         else:
+            if all:
+                return await interaction.response.send_message(
+                    "Your member ID was removed from the database", ephemeral=True
+                )
             await interaction.response.send_message(
-                "Your member ID was removed from the database", ephemeral=True
+                f"Your member ID was removed from the database for {interaction.guild.name}",
+                ephemeral=True,
             )
