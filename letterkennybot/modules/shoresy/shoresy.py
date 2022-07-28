@@ -46,8 +46,7 @@ class Shoresy(Cog):
         all: (Default False) Remove your ID from database for all guild references"""
         try:
             await query.remove_member(
-                interaction.author.id, interaction.guild.id
-                all_guilds==_all
+                interaction.author.id, interaction.guild.id, all_guilds=_all
             )
         except Exception as e:
             await interaction.response.send_message(
