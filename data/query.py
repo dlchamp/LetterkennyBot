@@ -28,9 +28,9 @@ async def add_member(member_id: int, guild_id: int) -> None:
                 await session.commit()
 
 
-async def remove_member(member_id: int, guild_id: int, *, all: bool) -> None:
+async def remove_member(member_id: int, guild_id: int, *, all_guilds: bool) -> None:
     """Removes the member from the database for the guild"""
-    if all:
+    if all_guilds:
         statement = delete(Members).where(Members.member_id == member_id)
     else:
         statement = (

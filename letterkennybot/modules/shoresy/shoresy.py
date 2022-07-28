@@ -37,7 +37,7 @@ class Shoresy(Cog):
 
     @slash_command(name="remove")
     async def remove_member(
-        self, interaction: ApplicationCommandInteraction, all: bool = False
+        self, interaction: ApplicationCommandInteraction, _all: bool = False
     ) -> None:
         """Remove your member ID from the database
 
@@ -47,7 +47,7 @@ class Shoresy(Cog):
         try:
             await query.remove_member(
                 interaction.author.id, interaction.guild.id
-                all=all
+                all_guilds==_all
             )
         except Exception as e:
             await interaction.response.send_message(
