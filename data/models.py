@@ -19,7 +19,7 @@ class Members(Base):
 
 
 engine = create_async_engine("sqlite+aiosqlite:///data/data.db")
-`
+
 
 async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 

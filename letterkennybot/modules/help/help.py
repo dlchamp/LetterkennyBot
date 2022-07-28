@@ -19,9 +19,11 @@ class Help(Cog):
 
         embed = Embed(
             title=f"{self.bot.user.name} help",
-            description="Over 60 of your favorite chirps and quotes from seasons 1-10 of Letterkenny and season 1 of Shoresy",
+            description="Over 70 of your favorite chirps and quotes from seasons 1-10 of Letterkenny and season 1 of Shoresy",
         )
-        embed.set_thumbnail(url=self.bot.user.avatar.url)
+        embed.set_thumbnail(
+            url=self.bot.user.avatar.url if self.bot.user.avatar else Embed.Empty
+        )
         embed.add_field(
             name="Trigger Phrases:",
             value='"Fuck you, Shoresy"\n"it\'s fucking embarrassing"\n"How are ya now"\n"To be fair"\nothers...',
@@ -29,7 +31,7 @@ class Help(Cog):
         )
         embed.add_field(
             name="Commands:",
-            value="`/remove` - Remove your stored member ID from the database",
+            value="`/remove [all]` - Remove your stored member ID from the database for this guild. Set [all] to True to remove your ID for all guilds it may be associated with",
             inline=False,
         )
         embed.add_field(
