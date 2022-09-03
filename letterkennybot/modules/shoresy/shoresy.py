@@ -1,22 +1,22 @@
+import disnake
 from data import query
-from disnake import ApplicationCommandInteraction, Message
-from disnake.ext.commands import Cog, slash_command
+from disnake.ext import commands
 from letterkennybot.modules.shoresy import response
 
 
-class Shoresy(Cog):
+class Shoresy(commands.Cog):
     """Represents the message events that trigger from hot phrases"""
 
     def __init__(self, bot):
         self.bot = bot
 
-    @Cog.listener()
+    @commands.Cog.listener()
     async def on_ready(self) -> None:
         """Invoked when this cog is loaded"""
         print(f"Cog loaded: {self.qualified_name}")
 
-    @Cog.listener()
-    async def on_message(self, message: Message) -> None:
+    @commands.Cog.listener()
+    async def on_message(self, message: disnake.Message) -> None:
         """Discord message event listener.  Only activated from trigger words"""
 
         if message.author.bot:
@@ -35,9 +35,11 @@ class Shoresy(Cog):
             await query.add_member(member.id, guild.id)
             return await message.channel.send(reply)
 
-    @slash_command(name="remove")
+    @commands.slash_command(name="remove")
     async def remove_member(
-        self, interaction: ApplicationCommandInteraction, _all: bool = False
+        self,
+        interaction: disnake.ApplicationCommandInteraction,
+        _all: bool = commands.Param(default=False, name="all"),
     ) -> None:
         """Remove your member ID from the database
 
@@ -49,6 +51,7 @@ class Shoresy(Cog):
                 interaction.author.id, interaction.guild.id, all_guilds=_all
             )
         except Exception as e:
+            print(e)
             await interaction.response.send_message(
                 "There was an error. It has been logged, please try again later",
                 ephemeral=True,

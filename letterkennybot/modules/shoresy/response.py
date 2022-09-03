@@ -25,7 +25,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-from random import choice, choices
+import random
 
 from data import query
 
@@ -38,7 +38,11 @@ fight_triggers: list = [
     "whats going to happen",
 ]
 shoresy_triggers: list = ["fuck", "you", "shoresy"]
-how_are_ya_triggers: list = ["how're ya now", "how are ya now", "how'r ya now"]
+how_are_ya_triggers: list = [
+    "how're ya now",
+    "how are ya now",
+    "how'r ya now, howr ya now",
+]
 
 
 async def get_response(content: str, *, member_id: int, guild_id: int) -> str:
@@ -65,7 +69,7 @@ async def get_response(content: str, *, member_id: int, guild_id: int) -> str:
     if "appreciates" in content:
         return f"Take about 10 to 15% off'er there, <@{member_id}>"
 
-    if "good idea" in content:
+    if any(word in content for word in ["great idea", "good idea"]):
         return "It's the best fuckin' idea I've ever heard in my life."
 
 
@@ -74,8 +78,8 @@ async def shoresy_response(member_id: int, guild_id: int) -> str:
     with open("./data/quotes.txt") as f:
         r = f.readlines()
 
-    selection = choices(r, k=5)
-    selected = choice(selection)
+    selection = random.choices(r, k=5)
+    selected = random.choice(selection)
 
     second_mention = await query.get_random_member(member_id, guild_id)
 
@@ -91,4 +95,4 @@ def fight_response() -> str:
     """Generate a response for the 'what's gunna happen' trigger phrase"""
     with open("./data/fight.txt") as f:
         r = f.readlines()
-    return choice(r)
+    return random.choice(r)
