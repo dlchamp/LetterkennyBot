@@ -28,20 +28,25 @@ SOFTWARE.
 """
 from sys import version as py_version
 
-from disnake import Activity, ActivityType, Intents
+import disnake
 from disnake import __version__ as disnake_version
-from disnake.ext.commands import InteractionBot
+from disnake.ext import commands
 
 from letterkennybot import __version__ as bot_version
 from letterkennybot.modules.guild import GuildEvent
 from letterkennybot.modules.help import Help
 from letterkennybot.modules.shoresy import Shoresy
 
-intents = Intents.default()
+intents = disnake.Intents.none()
+intents.guild_messages = True
+intents.guilds = True
+intents.members = True
+intents.messages = True
 intents.message_content = True
 
-bot = InteractionBot(
-    intents=intents, activity=Activity(type=ActivityType.listening, name="/help")
+bot = commands.InteractionBot(
+    intents=intents,
+    activity=disnake.Activity(type=disnake.ActivityType.listening, name="/help"),
 )
 
 
@@ -53,7 +58,7 @@ async def bot_ready():
         f"Python Version: {py_version}\n"
         f"Disnake Version: {disnake_version}\n"
         f"Bot Version: {bot_version}\n"
-        f"Connected to {len(bot.guilds)} guilds\n"
+        f"Connected to {len(bot.guilds)} guilds with  a total of {len(bot.users)} members\n"
         "------------------------------"
     )
 
