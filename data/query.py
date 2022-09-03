@@ -1,4 +1,3 @@
-from os import remove
 from random import choice, choices
 
 from sqlalchemy import delete
