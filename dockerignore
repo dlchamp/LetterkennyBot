@@ -1,2 +1,8 @@
-git
-__pycache__
+# Exclude everything
+*
+
+# Exceptions
+!shoresy/
+!pyproject.toml
+!poetry.lock
+!LICENSE

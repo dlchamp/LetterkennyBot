@@ -1,1 +1,0 @@
-from .shoresy import Shoresy

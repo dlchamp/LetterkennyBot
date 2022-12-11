@@ -1,32 +1,27 @@
 import disnake
 from disnake.ext import commands
 
+from shoresy.bot import Shoresy
+
 
 class Help(commands.Cog):
     """Class that represents help related command and events"""
 
-    def __init__(self, bot: commands.InteractionBot) -> None:
+    def __init__(self, bot: Shoresy) -> None:
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_ready(self) -> None:
-        """Invoked when this cog is loaded"""
-        print(f"Cog loaded: {self.qualified_name}")
-
     @commands.slash_command(name="help")
-    async def help_command(self, interaction: disnake.ApplicationCommandInteraction):
+    async def help_command(self, interaction: disnake.GuildCommandInteraction):
         """Display info, commands, and privacy terms"""
 
         remove = self.bot.get_global_command_named("remove")
 
         embed = disnake.Embed(
             title=f"{self.bot.user.name} help",
-            description="Over 70 of your favorite chirps and quotes from seasons 1-10 of Letterkenny and season 1 of Shoresy",
+            description="Over 70 of your favorite chirps and quotes from all seasons of Letterkenny and Shoresy",
         )
         embed.set_thumbnail(
-            url=self.bot.user.avatar.url
-            if self.bot.user.avatar
-            else disnake.Embed.Empty
+            url=self.bot.user.avatar.url if self.bot.user.avatar else disnake.Embed.Empty
         )
         embed.add_field(
             name="Trigger Phrases:",
@@ -35,7 +30,7 @@ class Help(commands.Cog):
         )
         embed.add_field(
             name="Commands:",
-            value=f"</{remove.name}:{remove.id}> [all] - Remove your stored member ID from the database for this guild. Set [all] to True to remove your ID for all guilds it may be associated with",
+            value=f"</{remove.name}:{remove.id}> [all] - Remove your stored member ID from the database (This means it will not be randomly drawn for certain responses)",
             inline=False,
         )
         embed.add_field(
@@ -51,3 +46,7 @@ class Help(commands.Cog):
         )
 
         await interaction.response.send_message(embed=embed, components=[button])
+
+
+def setup(bot: Shoresy) -> None:
+    bot.add_cog(Help(bot))

@@ -1,0 +1,6 @@
+
+aiosqlite==0.17.0
+disnake==2.7.0
+loguru==0.6.0
+python-dotenv==0.21.0
+sqlalchemy==1.4.44
