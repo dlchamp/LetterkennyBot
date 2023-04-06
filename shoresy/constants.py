@@ -16,7 +16,8 @@ FIGHT_TRIGGER = (
     "whats gunna happen",
     "what's gonna happen",
     "whats gonna happen",
-    "what's going to happen" "whats going to happen",
+    "what's going to happen",
+    "whats going to happen",
 )
 
 SHORESY_TRIGGER = ("fuck you shoresy", "fuck you, shoresy")
