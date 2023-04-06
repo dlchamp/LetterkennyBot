@@ -23,7 +23,8 @@ SHORESY_TRIGGER = ("fuck you shoresy", "fuck you, shoresy")
 
 HOW_ARE_YA_TRIGGER = (
     "how're ya now",
-    "how are ya now" "howr ya now",
+    "how are ya now",
+    "howr ya now",
     "how'r ya now",
 )
 
