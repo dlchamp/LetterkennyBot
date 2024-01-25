@@ -10,7 +10,6 @@ async def add_member(session: AsyncSession, *, member_id: int, guild_id: int) ->
     """Adds a new member to that database if they do not already exist"""
 
     async with session() as session:
-
         resp = await session.execute(
             select(models.Member)
             .where(models.Member.member_id == member_id)
@@ -40,12 +39,13 @@ async def remove_member(session: AsyncSession, *, member_id: int) -> None:
         await session.commit()
 
 
-async def get_random_member(session: AsyncSession, *, member_id: int, guild_id: int) -> int:
+async def get_random_member(
+    session: AsyncSession, *, member_id: int, guild_id: int
+) -> models.Member:
     """Get all member IDs for the guild from the database and return
     a randomly selected ID that is NOT the member_id"""
 
     async with session() as session:
-
         result = await session.execute(
             select(models.Member)
             .where(models.Member.guild_id == guild_id)
