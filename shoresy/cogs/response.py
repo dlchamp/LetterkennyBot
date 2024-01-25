@@ -97,7 +97,7 @@ class Response(commands.Cog):
         if second_member is None and "{second}" in selected:
             return await self.shoresy_response(member_id, guild_id)
 
-        return selected.replace("{second}", f"<@{second_member}>").replace(
+        return selected.replace("{second}", f"<@{second_member.member_id}>").replace(
             "{mention}", f"<@{member_id}>"
         )
 
