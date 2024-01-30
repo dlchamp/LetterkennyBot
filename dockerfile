@@ -1,31 +1,21 @@
-FROM python:3.10.8-slim as os-base
+# Use an official Python base image
+FROM python:3.11-slim
 
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
-RUN apt-get update
-RUN apt-get install -y curl
-RUN apt-get install -y nano
+ENV PIP_NO_CACHE_DIR=false
 
-FROM os-base as poetry-base
-
-RUN pip install -U pip setuptools wheel
-
-RUN curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.2.2 python3 -
-ENV PATH="${PATH}:/root/.local/bin"
-RUN poetry config virtualenvs.create false
-RUN apt-get remove -y curl
-
-FROM poetry-base as app-base
-
-RUN mkdir /app
 WORKDIR /app
-COPY shoresy ./shoresy
-COPY pyproject.toml ./pyproject.toml
-RUN poetry install --only main -vvv
-RUN poetry update
 
-FROM app-base as main
+RUN apt update && apt-get install -y git
 
-CMD tail -f /dev/null
+# Install Poetry
+RUN pip install -U pip wheel setuptools
+RUN pip install poetry==1.7.1
 
-CMD ["python", "-m", "shoresy"]
+COPY pyproject.toml poetry.lock* ./
+
+RUN poetry config virtualenvs.create false
+RUN poetry install --only main
+
+COPY . .
+
+ENTRYPOINT ["python", "main.py" ]
