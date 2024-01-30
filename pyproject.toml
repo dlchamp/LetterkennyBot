@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "shoresy"
-version = "2.2.0"
+version = "2.3.0"
 description = "Get insulted by Shorey and the gang with quotes from all seasons of Letterkenny and the spin-off Shoresy"
 authors = ["DLCHAMP <36091350+dlchamp@users.noreply.github.com>"]
 license = "MIT"
