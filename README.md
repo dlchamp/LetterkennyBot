@@ -54,4 +54,3 @@ Users will be able to remove their ID from this database if they wish with a sim
 3. Open the .env-sample file in a text editor and paste in your copied token, save, and rename the .env-sample to .env
 5. Create your virtual env and install dependencies with `poetry install` from within the project's root directory (where main.py is located)
 6. Run the project with `python main.py`
-

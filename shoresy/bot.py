@@ -1,95 +1,189 @@
+from __future__ import annotations
+
+import datetime as dt
 import os
-from datetime import datetime
-from sys import version as sys_version
-from typing import AsyncGenerator, ClassVar
+import random
+import sys as s
+from pathlib import Path
 
 import disnake
+import sqlalchemy as sa
 from disnake import __version__ as disnake_version
 from disnake.ext import commands
-from loguru import logger
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.future import select as sa_select
 
 from shoresy import __version__ as bot_version
+from shoresy import constants, database, log
 
-__all__ = ("Shoresy",)
+logger = log.get_logger(__name__)
 
 
 class Shoresy(commands.InteractionBot):
-    """Base bot instance"""
+    """Base bot instance."""
 
-    db: ClassVar[AsyncGenerator[AsyncSession, None]]
-    start_time: ClassVar[datetime]
+    def __init__(
+        self,
+        intents: disnake.Intents,
+        *,
+        reload: bool,
+        activity: disnake.Activity | None = None,
+    ) -> None:
+        super().__init__(intents=intents, reload=reload, activity=activity)
 
-    def __init__(self, **kwargs) -> None:
-        super().__init__(**kwargs)
-        self.images: dict[str, disnake.File] = {}
-        self.quote_responses: list[str] = []
+        self.start_time: dt.datetime = dt.datetime.now(tz=dt.timezone.utc)
+
+        self.engine = engine = create_async_engine(constants.Config.sqlite_path)
+        self.db_session = async_sessionmaker(
+            engine,
+            expire_on_commit=False,
+            class_=AsyncSession,
+        )
+
+        self.shoresy_responses: list[str] = []
         self.fight_responses: list[str] = []
 
+        self.reload_fight_responses()
+        self.reload_shoresy_responses()
+
+    @property
+    def db(self) -> async_sessionmaker[AsyncSession]:
+        """Return the bot's db AsyncSession."""
+        return self.db_session
+
+    def load_responses_from_file(self, path: Path) -> list[str]:
+        """Load the responses from the path."""
+        with path.open() as f:
+            responses = f.readlines()
+
+        logger.info(f"{len(responses)} responses loaded from {path}")
+        return responses
+
+    def reload_fight_responses(self) -> None:
+        """Reload fight respones from file when cache is empty."""
+        path = Path("shoresy/responses/fight.txt")
+        self.fight_responses = self.load_responses_from_file(path)
+
+    def reload_shoresy_responses(self) -> None:
+        """Reload shoresy responses from file when cache is empty."""
+        path = Path("shoresy/responses/shoresy.txt")
+        self.fight_responses = self.load_responses_from_file(path)
+
+    def _get_random_shoresy_response(self) -> str:
+        """Get a random shoresy response."""
+        if not self.shoresy_responses:
+            self.reload_shoresy_responses()
+
+        return self.shoresy_responses.pop(
+            random.randint(0, (len(self.shoresy_responses) - 1)),
+        )
+
+    def get_random_fight_response(self) -> str:
+        """Get a random fight trigger response."""
+        if not self.shoresy_responses:
+            self.reload_fight_responses()
+
+        return self.fight_responses.pop(
+            random.randint(0, len(self.fight_responses) - 1),
+        )
+
+    async def get_shoresy_response(self, member: disnake.Member) -> str:
+        """Get a shoresy response with member and second mentions."""
+        response = self._get_random_shoresy_response()
+        response = response.format(mention=member.mention)
+
+        if "{second}" in response:
+            if not (
+                second := await self.get_random_second_member(
+                    member.id,
+                    member.guild.id,
+                )
+            ):
+                return await self.get_shoresy_response(member)
+
+            response = response.format(second=second.mention)
+
+        return response
+
     async def on_ready(self) -> None:
-        print(
+        """Execute when bot is ready and cache is populated."""
+        now = dt.datetime.now(tz=dt.timezone.utc)
+        message = (
             "----------------------------------------------------------------------\n"
-            f'Bot started at: {datetime.now().strftime("%m/%d/%Y - %H:%M:%S")}\n'
-            f"System Version: {sys_version}\n"
+            f"Running in DEV MODE: '{constants.DEV_MODE}'\n"
+            f'Bot started at: {now.strftime("%m/%d/%Y - %H:%M:%S")}\n'
+            f"System Version: {s.version}\n"
             f"Disnake Version: {disnake_version}\n"
             f"Bot Version: {bot_version}\n"
             f"Connected to Discord as {self.user} ({self.user.id})\n"
             "----------------------------------------------------------------------\n"
         )
-        return
+        logger.info(message)
 
-    async def load_extensions(self) -> None:
-        """Load all extensions available on 'cogs'"""
-        for item in os.listdir("shoresy/cogs"):
-
-            name, ext = os.path.splitext(item)
-            if "__" in name or ext != ".py":
+    def load_extensions(self, path: str) -> None:
+        """Load all bot extensions."""
+        for item in os.listdir(path):
+            if "__" in item or not item.endswith(".py"):
                 continue
 
-            ext = f"shoresy.cogs.{name}"
-            self.load_extension(ext)
-            logger.info(f"Cog loaded: {ext}")
+            ext = f"shoresy.exts.{item[:-3]}"
+            super().load_extension(ext)
+            logger.info(f"Extension loaded: {item}")
 
-    def load_fight_responses(self) -> list[str]:
-        """Loads the available fight responses from  the txt file"""
+    async def ensure_member(
+        self,
+        member: disnake.Member,
+        *,
+        session: AsyncSession | None = None,
+    ) -> database.Member:
+        """Create or retrieve a member from the database."""
+        if not session:
+            session = self.db()
 
-        with open("shoresy/core/responses/fight.txt") as f:
-            self.fight_responses = f.readlines()
+        async with session.begin_nested() if session.in_transaction() else session.begin() as trans:
+            result = await session.execute(
+                sa_select(database.Member)
+                .where(database.Member.member_id == member.id)
+                .where(database.Member.guild_id == member.guild.id),
+            )
+            _member = result.scalar_one_or_none()
 
-        logger.info(f"{len(self.fight_responses)} fight responses have been loaded")
-        return self.fight_responses
+            if _member is None:
+                _member = database.Member(member_id=member.id, guild_id=member.guild.id)
 
-    def load_shoresy_quotes(self) -> list[str]:
-        """Loads all shoresy quotes from the txt file"""
+                session.add(_member)
+                await trans.commit()
 
-        with open("shoresy/core/responses/shoresy.txt") as f:
-            self.quote_responses = f.readlines()
+            return _member
 
-        logger.info(f"{len(self.quote_responses)} quotes have been loaded")
-        return self.quote_responses
+    async def remove_member(self, member: disnake.Member, *, all_guilds: bool) -> None:
+        """Remove a member form the database."""
+        session = self.db()
+        query = sa.delete(database.Member).where(database.Member.member_id == member.id)
 
-    def load_image_responses(self) -> None:
-        """Loads the images as `disnake.File` and store in `self.images`
-        where image file name is the key"""
+        if not all_guilds:
+            query = query.where(database.Member.guild_id == member.guild.id)
 
-        path = "shoresy/core/images"
+        async with session.begin() as trans:
+            await session.execute(query)
+            await trans.commit()
 
-        for image in os.listdir(path):
-            name, ext = os.path.splitext(image)
+    async def get_random_second_member(
+        self,
+        member_id: int,
+        guild_id: int,
+    ) -> database.Member | None:
+        """Get a random member from the database for the guild_id."""
+        session = self.db()
 
-            if ext not in (".gif", ".jpg", ".png"):
-                continue
-
-            self.images[name] = disnake.File(f"{path}/{image}", filename=image)
-
-        logger.info(f"{len(self.images)} images have been loaded.")
-
-        return
-
-    def check_response_cache(self) -> None:
-        """Checks if the response and images cache is populated, else populates them"""
-        if any(len(item) == 0 for item in [self.quote_responses, self.fight_responses]):
-            self.load_bot_responses()
-
-        if len(self.images) == 0:
-            self.load_image_responses()
+        async with session.begin():
+            member = await session.execute(
+                sa.select(database.Member)
+                .where(
+                    database.Member.guild_id == guild_id,
+                    database.Member.member_id != member_id,
+                )
+                .order_by(sa.func.random())
+                .limit(1),
+            )
+            return member.scalar_one_or_none()
