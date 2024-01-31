@@ -1,34 +1,52 @@
-"""
-MIT License
+import asyncio
+import os
+import signal
+import sys
 
-Copyright (c) 2022 DLCHAMP
+import disnake
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+from shoresy import constants, log
+from shoresy.bot import Shoresy
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+logger = log.get_logger(__name__)
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-"""
-from os import getenv
-
-from letterkennybot import bot
+_intents = disnake.Intents.none()
+_intents.guilds = True
+_intents.message_content = True
+_intents.messages = True
 
 
-def main():
-    bot.run(getenv("TOKEN"))
+async def main() -> None:
+    """Create and run the bot."""
+    bot = Shoresy(intents=_intents, reload=constants.DEV_MODE)
+    bot.start_time = disnake.utils.utcnow()
+
+    try:
+        bot.load_extensions("shoresy/exts")
+
+    except Exception:
+        await bot.close()
+        raise
+
+    try:
+        if os.name != "nt":
+            # start process for linux host
+            loop = asyncio.get_event_loop()
+
+            future = asyncio.ensure_future(bot.start(constants.Config.token), loop=loop)
+            loop.add_signal_handler(signal.SIGINT, lambda: future.cancel())
+            loop.add_signal_handler(signal.SIGTERM, lambda: future.cancel())
+
+            await future
+
+        else:
+            await bot.start(constants.Config.token)
+
+    except (asyncio.CancelledError, KeyboardInterrupt):
+        logger.warning("Kill command received. Bot is closed.")
+        if not bot.is_closed():
+            await bot.close()
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(asyncio.run(main()))

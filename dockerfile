@@ -1,28 +1,21 @@
-FROM python:3.9-slim as os-base
+# Use an official Python base image
+FROM python:3.11-slim
 
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV POETRY_VERSION=1.1.13
-RUN apt-get update
-RUN apt-get install -y curl
+ENV PIP_NO_CACHE_DIR=false
 
-FROM os-base as poetry-base
+WORKDIR /app
 
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-ENV PATH="/root/.poetry/bin:$PATH"
+RUN apt update && apt-get install -y git
+
+# Install Poetry
+RUN pip install -U pip wheel setuptools
+RUN pip install poetry==1.7.1
+
+COPY pyproject.toml poetry.lock* ./
+
 RUN poetry config virtualenvs.create false
-RUN apt-get remove -y curl
+RUN poetry install --only main
 
-FROM poetry-base as app-base
-
-ARG APPDIR=/app
-WORKDIR $APPDIR/
 COPY . .
-COPY pyproject.toml ./pyproject.toml
-RUN poetry install --no-dev
 
-FROM app-base as main
-
-CMD tail -f /dev/null
-
-CMD ["python", "-u", "main.py"]
+ENTRYPOINT ["python", "main.py" ]

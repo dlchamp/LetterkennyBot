@@ -2,8 +2,8 @@
 
 ## Description
 
-Now includes best of Season 10 and the first season of Shoresy
-A simple Discord bot written in Python using the Disnake wrapper for Discord.  This bot will monitor channels for specific phrases and respond to them with over 70 quotes from the show.
+Covers all seasons of Letterkenny and released seasons of Shoresy
+A simple Discord bot written in Python using the Disnake wrapper for Discord.  This bot will monitor channels for specific phrases and respond to them with over 70 quotes from the shows.
 
 If you don't wish to self host, you can always just [invite me to your server!](https://discord.com/api/oauth2/authorize?client_id=873640710480486451&permissions=109568&scope=bot%20applications.commands)
 
@@ -26,7 +26,7 @@ Users will be able to remove their ID from this database if they wish with a sim
 
 ### Dependencies
 
-* Built on [Python3 - 3.9+](https://www.python.org/downloads/)
+* Built on [Python3 - 3.11](https://www.python.org/downloads/)
 * get started quickly with `poetry install` from within the project root
 * get poetry with `pip install poetry`
 
@@ -48,10 +48,13 @@ Users will be able to remove their ID from this database if they wish with a sim
 13. Copy the generated link and Go to the URL in your browser - Invite Bot to your Discord server
 
 
-#### Windows Installation and Run
-1. Download this repo and extract to a location
+#### Installation and Run
+1. Clone the repo
 2. Open command and navigate inside of bot's directory
 3. Open the .env-sample file in a text editor and paste in your copied token, save, and rename the .env-sample to .env
 5. Create your virtual env and install dependencies with `poetry install` from within the project's root directory (where main.py is located)
-6. Run the project with `python main.py`
+6. Initialize the database by running these two commands:
+    - `alembic revision --autogenerate -m "init db"`
+    - `alembic upgrade head`
 
+7.  Now you're ready to run the bot - `python main.py`
