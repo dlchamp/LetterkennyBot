@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "shoresy"
-version = "2.3.0"
+version = "2.3.2"
 description = "Get insulted by Shorey and the gang with quotes from all seasons of Letterkenny and the spin-off Shoresy"
 authors = ["DLCHAMP <36091350+dlchamp@users.noreply.github.com>"]
 license = "MIT"
@@ -9,20 +9,20 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.10"
 aiosqlite = "^0.19.0"
-sqlalchemy = "^2.0.25"
-disnake = "^2.9.1"
+sqlalchemy = "^2.0.32"
+disnake = "^2.9.2"
 coloredlogs = "^15.0.1"
 disnake-ext-plugins = {git = "https://github.com/disnakecommunity/disnake-ext-plugins"}
 
 
 [tool.poetry.group.dev.dependencies]
-alembic = "^1.13.1"
+alembic = "^1.13.2"
 python-dotenv = "^1.0.1"
 ruff = "^0.1.15"
-black = "^24.1.1"
+black = "^24.8.0"
 isort = "^5.13.2"
-pyright = "^1.1.349"
-pre-commit = "^3.6.0"
+pyright = "^1.1.377"
+pre-commit = "^3.8.0"
 
 [build-system]
 requires = ["poetry-core"]
