@@ -63,29 +63,32 @@ class Shoresy(commands.InteractionBot):
         """Reload fight responses from file when cache is empty."""
         path = Path("shoresy/responses/fight.txt")
         self.fight_responses = self.load_responses_from_file(path)
+        random.shuffle(self.fight_responses)
 
     def reload_shoresy_responses(self) -> None:
         """Reload shoresy responses from file when cache is empty."""
         path = Path("shoresy/responses/shoresy.txt")
         self.shoresy_responses = self.load_responses_from_file(path)
+        random.shuffle(self.shoresy_responses)
+
+
+    def _get_random_response(self, responses: list[str]) -> str:
+        return responses.pop()
 
     def _get_random_shoresy_response(self) -> str:
         """Get a random shoresy response."""
-        if not self.shoresy_responses:
+        if len(self.shoresy_responses) < 3:
             self.reload_shoresy_responses()
 
-        return self.shoresy_responses.pop(
-            random.randint(0, (len(self.shoresy_responses) - 1)),
-        )
+        return self._get_random_response(self.shoresy_responses)
+    
 
     def get_random_fight_response(self) -> str:
         """Get a random fight trigger response."""
-        if not self.shoresy_responses:
+        if len(self.fight_responses) < 2:
             self.reload_fight_responses()
 
-        return self.fight_responses.pop(
-            random.randint(0, len(self.fight_responses) - 1),
-        )
+        return self._get_random_response(self.fight_responses)
 
     async def get_shoresy_response(self, member: disnake.Member) -> str:
         """Get a shoresy response with member and second mentions."""
@@ -155,6 +158,14 @@ class Shoresy(commands.InteractionBot):
                 await trans.commit()
 
             return _member
+        
+    async def remove_guild_members(self, guild_id: int) -> None:
+        '''Remove a guild and its members from the database.'''
+        session = self.db()
+
+        async with session.begin() as trans:
+            await session.execute(sa.delete(database.Member).where(database.Member.guild_id == guild_id))
+            await trans.commit()
 
     async def remove_member(self, member: disnake.Member, *, all_guilds: bool) -> None:
         """Remove a member form the database."""
